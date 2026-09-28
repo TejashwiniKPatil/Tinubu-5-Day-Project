@@ -80,7 +80,7 @@ The white-box unit run enforces at least 90% branch coverage and reached 94.29%.
 
 ## Current release position
 
-The Day 5 verdict is **No-Go**: 11 defects remain open, including 4 High (DEF-002 blocks quote submission), regression execution is incomplete, the latest three-run triage failed, and smoke has only a local passing run without a verified CI artifact. Performance, security, and accessibility checks are incomplete. See `day-5/test-summary-report.md`; do not describe planned or missing execution evidence as completed.
+The Day 5 verdict is **Go with accepted risks**. Not all Day 1 exit criteria are met: 11 defects remain open, including 4 High (DEF-002 blocks quote submission in one path, and DEF-005 creates duplicate bonds), and regression execution is incomplete. The pod accepts these risks on condition that DEF-002 and DEF-005 are fixed first and the remaining defects and cases are completed in the next cycle. See `day-5/test-summary-report.md`; do not describe planned or missing execution evidence as completed.
 
 ## Run k6
 

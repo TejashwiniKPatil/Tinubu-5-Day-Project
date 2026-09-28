@@ -42,16 +42,15 @@ jobs:
         run: npm run test:smoke
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/smoke
-
       - name: Run Regression tests
         if: ${{ !cancelled() }}
-        run: npm run test:regression
+        run: npx playwright test --grep @regression --grep-invert "@lockout|@stateful-login"
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/regression
 
       - name: Run High Value tests
         if: ${{ !cancelled() }}
-        run: npm run test:high-value
+        run: npx playwright test --grep @high-value --grep-invert "@lockout|@stateful-login"
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/high-value
 

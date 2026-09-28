@@ -39,6 +39,6 @@ Review the performance-window gate, security checklist, and usability and access
 
 ### 18 to 20 minutes
 
-Defend **NO-GO** against the Day 1 exit criteria and list the evidence needed to change the verdict.
+Present **Go with accepted risks**. Show which Day 1 exit criteria are met and which are not, name the accepted risks (DEF-002 and DEF-005 first), and state the conditions attached to the Go.
 
 Do not claim a live smoke pass, CI pass, k6 result, security pass, or axe/Lighthouse pass unless the corresponding dated evidence is available.

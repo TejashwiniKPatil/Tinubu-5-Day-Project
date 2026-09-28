@@ -2,7 +2,7 @@
 
 - **Date:** 2026-09-25 (updated 2026-09-28)
 - **Environment:** Alpha Surety QA automated test runs; no build identifier recorded
-- **Verdict:** **NO-GO.** Exit criteria are not demonstrated, and the current repeatability run has failures.
+- **Verdict:** **GO with accepted risks.** Not all Day 1 exit criteria are met; the open risks and conditions are listed under "Decision" at the end of this report.
 
 ## Coverage and results
 
@@ -134,6 +134,30 @@ The Day 1 test plan maps Severity-1 to High and Severity-2 to Medium. Open Alpha
 
 ### Failed tests documented
 
-**Verdict:** Partially met. Workbook failures and triage logs exist; triage causes and fixes are not fully reviewed in Trace Viewer.
+**Verdict:** Met. Workbook failures, defects, and triage logs are recorded. The three tests that failed every repeatability run were diagnosed, fixed, and then passed 9 of 9 attempts (see `day-4/flaky-triage.md`).
 
-**Decision: NO-GO.** Keep the release blocked until open critical or high-risk failures are triaged, required cases are executed, 100% smoke evidence is recorded, and regression coverage meets the documented exit threshold.
+## Decision: GO with accepted risks
+
+By the strict Day 1 exit criteria, the release does not qualify: the Severity-1, Severity-2, regression, and critical-scenario criteria above are not met. The criteria have not been changed. The pod has decided to release with the known risks accepted and recorded.
+
+### Reasons
+
+- The build-acceptance smoke suite passed (10 of 10 on 2026-09-25).
+- The automation instability came from test issues (two ambiguous locators and one test-order problem). It is fixed and verified.
+- Five of the 11 open defects are Low severity (messaging and cosmetic).
+- Every open High and Medium defect is logged with reproduction steps and evidence, so the risks are known.
+
+### Accepted risks
+
+- **DEF-002 (High):** Quote submission is blocked in the attached-principal path until it is fixed.
+- **DEF-005 (High):** A repeated create-bond request creates a duplicate bond (reproduced on 2026-09-28: BondId 1012032 and 1012033).
+- **DEF-001 (High):** Very long login input returns HTTP 500.
+- **DEF-004 (High):** A created principal disappears after refresh.
+- **DEF-003 and DEF-008 (Medium):** A long note breaks the layout, and an incomplete company is saved as "Unknown".
+- **Coverage:** 26 of the 45 workbook cases, the security checklist, and the accessibility pass have not been executed.
+
+### Conditions
+
+1. Fix and retest DEF-002 and DEF-005 first, before users rely on quote submission and bond creation.
+2. Fix and retest the remaining High and Medium defects in the next cycle.
+3. Execute the remaining workbook cases, the security checklist, and the accessibility pass, and rerun regression.
