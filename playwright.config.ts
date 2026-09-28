@@ -2,10 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import { env } from 'node:process';
 import path from 'path';
-import { getRequiredEnvironmentVariable } from './src/utils/environment';
+import { getBaseUrl } from './src/utils/environment';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
-const baseURL = getRequiredEnvironmentVariable('URL').trim();
+const baseURL = getBaseUrl();
 const authFile = path.resolve(__dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({

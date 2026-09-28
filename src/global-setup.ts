@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, type FullConfig } from '@playwright/test';
 import { LoginPage } from './pages/LoginPage';
-import { getRequiredEnvironmentVariable } from './utils/environment';
+import { getBaseUrl, getRequiredEnvironmentVariable } from './utils/environment';
 
 const authFile = path.resolve(__dirname, '../playwright/.auth/user.json');
 const sessionStorageFile = path.resolve(__dirname, '../playwright/.auth/session-storage.json');
@@ -12,7 +12,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
 
   try {
     const context = await browser.newContext({
-      baseURL: getRequiredEnvironmentVariable('URL').trim(),
+      baseURL: getBaseUrl(),
     });
     const page = await context.newPage();
     const loginPage = new LoginPage(page);

@@ -123,3 +123,13 @@ Date: 2026-09-28
 Request: (Found while checking the tester's git staging.) Keep secrets out of the repository.
 Produced: Unstaged `reports/` with `git rm -r --cached`, so the files stay on disk, and changed the ignore rule from `/reports/flaky-triage/` to `/reports/`.
 Correction: The staged `reports/stability-2026-09-28/` traces contained session and token data (270 matches), because the login fixture injects the saved session into each page. Traces are local evidence only and must never be committed or shared.
+
+Date: 2026-09-28
+Request: Fix the CI failure "page.goto: Cannot navigate to invalid URL" in global setup.
+Produced: Added `getBaseUrl()` to `src/utils/environment.ts`, and used it in `playwright.config.ts`, `src/global-setup.ts`, and `src/fixtures/qa.ts` instead of reading `URL` directly in three places. It trims whitespace and quotes, adds `https://` when the scheme is missing, returns only the origin, falls back to a built-in default address when `URL` is unset (removed in the next entry), and fails with a clear message for an address that is still invalid.
+Correction: The CI log showed that `URL` was set (config loading did not fail) but was not a full address, most likely a `vars.URL` value without `https://`. Checked the helper against empty, scheme-less, quoted, padded, path, and invalid values without touching Alpha. The CI run itself has not been repeated.
+
+Date: 2026-09-28
+Request: Do not hardcode the application URL; read it only from `.env`.
+Produced: Removed `DEFAULT_BASE_URL` and the fallback from `getBaseUrl()`. It now reads `URL` through `getRequiredEnvironmentVariable`, so a missing or empty value stops the run with "Required environment variable URL is not configured." The cleanup (trimming, removing quotes, adding `https://`) stays.
+Correction: The earlier version silently fell back to a built-in Alpha address, which hid missing configuration and put an environment value in code. Checked unset, empty, scheme-less, quoted, and invalid values; typecheck passes.

@@ -5,7 +5,7 @@ import { BondCreationPage } from '../pages/BondCreationPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { LoginPage } from '../pages/LoginPage';
 import { ProfileMenu } from '../pages/ProfileMenu';
-import { getRequiredEnvironmentVariable } from '../utils/environment';
+import { getBaseUrl } from '../utils/environment';
 
 export type QaFixtures = {
   loginPage: LoginPage;
@@ -24,7 +24,7 @@ export const test = base.extend<QaFixtures>({
   authenticatedSession: async ({ page, dashboardPage }, use) => {
     const sessionStorageFile = path.resolve(__dirname, '../../playwright/.auth/session-storage.json');
     const sessionStorage = JSON.parse(await readFile(sessionStorageFile, 'utf8')) as Record<string, string>;
-    const origin = new URL(getRequiredEnvironmentVariable('URL').trim()).origin;
+    const origin = getBaseUrl();
     await page.addInitScript(({ expectedOrigin, entries }) => {
       if (window.location.origin === expectedOrigin) {
         for (const [key, value] of Object.entries(entries)) {
