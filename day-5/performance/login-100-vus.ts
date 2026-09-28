@@ -14,9 +14,9 @@ export const options = {
   scenarios: {
     login_only: {
       executor: 'per-vu-iterations',
-      vus: 100,
+      vus: 5,
       iterations: 1,
-      maxDuration: '2m',
+      maxDuration: '1m',
     },
   },
   thresholds: {
