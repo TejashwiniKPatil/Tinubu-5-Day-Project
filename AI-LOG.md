@@ -178,3 +178,13 @@ Date: 2026-09-28
 Request: The lockout tests should not use the global setup login.
 Produced: Added `playwright.lockout.config.ts`, which reuses the main config without `globalSetup` and runs only the `login` project (empty storage). `npm run test:lockout` now uses it, so the CI lockout step and `test:full` never log in with the main account. Added the file to `tsconfig.json`, and updated CLAUDE.md and README.
 Correction: Verified while the main account was locked: `npm run test:lockout` showed no global setup login error and went straight to the lockout tests, which stopped at the expected "Configure LOCKOUT_TEST_USERNAME…" message, because the local `.env` has no lockout account. A separate config was used instead of an environment-variable switch, so the same command works in Windows cmd and in the Linux CI runner.
+
+Date: 2026-09-28
+Request: The API tests pass locally but fail in CI with HTTP 401 on the login call.
+Produced: `LoginApi.login()` now checks `TEST_USERNAME`, `TEST_PASSWORD`, `TEST_GRANT_TYPE`, and `TEST_CLIENT_ID` before sending anything, and fails with "Configure <names> before calling the login API…" when a value is empty. Verified locally with `TEST_CLIENT_ID` and `TEST_GRANT_TYPE` blank: the test stops with that message and no request is sent.
+Correction: In the same CI run, the 4 UI regression tests passed, so the UI login (username and password) works in CI and the account was not locked. Only the API call adds `client_id` and `grant_type`, and the workflow reads those from `vars.`, so if they were saved as secrets, CI sends them empty. That is the most likely cause, but it is not confirmed: if the next run still returns 401 without the new message, the CI values are set but wrong. `tests/api/` specs were not changed.
+
+Date: 2026-09-28
+Request: The API settings must always be present in CI, so the workflow does not fail on them.
+Produced: Each workflow setting is now read from the qa environment's Variables or Secrets, whichever holds it (for example `${{ vars.TEST_CLIENT_ID || secrets.TEST_CLIENT_ID }}`). Passwords stay secrets-only. Added a first step, "Check required CI settings", that fails in seconds and names (never prints) any missing value. It also fails if `LOCKOUT_TEST_USERNAME` equals `TEST_USERNAME`. Tested the step's shell logic locally: all set passes; empty client id and grant type, whitespace only, and the same account each fail with the right message.
+Correction: This removes the vars-versus-secrets mix-up that sent empty values and caused the 401. It cannot catch values that are present but wrong. Regression and high-value can still fail on real defects (DEF-005, DEF-002) and on missing Bond Creation data.

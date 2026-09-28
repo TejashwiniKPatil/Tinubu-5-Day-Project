@@ -12,17 +12,34 @@ jobs:
     runs-on: ubuntu-latest
     environment: qa
 
+    # Each value is read from the qa environment's Variables or Secrets, whichever holds it.
     env:
-      URL: ${{ vars.URL }}
-      TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+      URL: ${{ vars.URL || secrets.URL }}
+      TEST_USERNAME: ${{ secrets.TEST_USERNAME || vars.TEST_USERNAME }}
       TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-      TEST_CLIENT_ID: ${{ vars.TEST_CLIENT_ID }}
-      TEST_GRANT_TYPE: ${{ vars.TEST_GRANT_TYPE }}
-      LOGIN_API: ${{ vars.LOGIN_API }}
-      LOCKOUT_TEST_USERNAME: ${{ secrets.LOCKOUT_TEST_USERNAME }}
+      TEST_CLIENT_ID: ${{ vars.TEST_CLIENT_ID || secrets.TEST_CLIENT_ID }}
+      TEST_GRANT_TYPE: ${{ vars.TEST_GRANT_TYPE || secrets.TEST_GRANT_TYPE }}
+      LOGIN_API: ${{ vars.LOGIN_API || secrets.LOGIN_API }}
+      LOCKOUT_TEST_USERNAME: ${{ secrets.LOCKOUT_TEST_USERNAME || vars.LOCKOUT_TEST_USERNAME }}
       LOCKOUT_TEST_PASSWORD: ${{ secrets.LOCKOUT_TEST_PASSWORD }}
 
     steps:
+      - name: Check required CI settings
+        run: |
+          missing=""
+          for name in URL TEST_USERNAME TEST_PASSWORD TEST_CLIENT_ID TEST_GRANT_TYPE LOGIN_API LOCKOUT_TEST_USERNAME LOCKOUT_TEST_PASSWORD; do
+            if [ -z "${!name// /}" ]; then missing="$missing $name"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing CI settings in the qa environment:$missing. Add each one under Settings > Environments > qa (Variables, or Secrets for passwords)."
+            exit 1
+          fi
+          if [ "$TEST_USERNAME" = "$LOCKOUT_TEST_USERNAME" ]; then
+            echo "::error::LOCKOUT_TEST_USERNAME must be a different account from TEST_USERNAME, or the lockout tests will lock the main account."
+            exit 1
+          fi
+          echo "All required CI settings are present."
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
