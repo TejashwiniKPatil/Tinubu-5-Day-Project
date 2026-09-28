@@ -8,6 +8,7 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    environment: qa
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -21,6 +22,11 @@ jobs:
       run: npm run typecheck
     - name: Run smoke tests
       run: npm run test:smoke
+    - name: Run Regression tests
+      run: npm run test:regression
+    - name: Run High Value tests
+      run: npm run test:high-value
+
       env:
           URL: ${{ vars.URL }}
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
