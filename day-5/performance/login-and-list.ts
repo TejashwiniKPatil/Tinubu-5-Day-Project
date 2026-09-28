@@ -23,7 +23,7 @@ export const options = {
   scenarios: {
     baseline: {
       executor: 'constant-vus',
-      vus: Number(__ENV.VUS || 10),
+      vus: Number(__ENV.VUS || 5),
       duration: __ENV.DURATION || '1m',
     },
   },

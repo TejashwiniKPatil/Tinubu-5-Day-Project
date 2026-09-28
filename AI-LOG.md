@@ -158,3 +158,18 @@ Date: 2026-09-28
 Request: Change the release decision from No-Go to Go, because the tester judges the open bugs not critical enough to block.
 Produced: Changed the verdict to "Go with accepted risks" in the summary report, README, demo runbook, and demo guide. The report now has a Decision section with the reasons, each accepted risk (DEF-002, DEF-005, DEF-001, DEF-004, DEF-003, DEF-008, and the unexecuted coverage), and three conditions, starting with fixing DEF-002 and DEF-005 first. Marked "failed tests documented" as met, based on the triage fixes and the 9 of 9 rerun.
 Correction: Claude advised keeping No-Go, because the brief grades the decision against the Day 1 criteria and four High defects are open. The tester chose Go. The exit-criteria results were kept exactly as measured (not met stays not met), the Day 1 criteria were not changed, and no severity was lowered without a reason. A line in the demo guide saying "numbers say Go" was reworded, because the numbers do not meet the criteria.
+
+Date: 2026-09-28
+Request: CI run #11: login now works and 11 of 13 smoke tests passed, but API-001 and API-002 failed with "TypeError: Invalid URL" in `LoginApi.ts`.
+Produced: Added `getApiBaseUrl()`, which reads `LOGIN_API` through a shared helper (`getWebAddress`) that is also used by `getBaseUrl()`. It trims spaces and quotes, adds `https://` when missing, and fails with a clear message when the value is unset or invalid. `LoginApi.ts` and `CreateBondApi.ts` now use it instead of `process.env.LOGIN_API ?? ''`. Verified locally: API-001 passed with the `.env` value and with a value missing `https://`.
+Correction: The old code turned a missing `LOGIN_API` into an empty string, so the real cause showed only as "Invalid URL". The CI value of `vars.LOGIN_API` is still unconfirmed: if it is empty, the next run now says "Required environment variable LOGIN_API is not configured." `tests/api/` specs were not changed.
+
+Date: 2026-09-28
+Request: Keep only 5 VUs in the performance tests.
+Produced: Set both k6 scripts to 5 VUs: `login-5-vus.ts` (renamed from `login-100-vus.ts`) and `login-and-list.ts` (default `VUS` changed from 10 to 5). Changed the login sample threshold from `count==100` to `count==5`. Updated the SLA document (workload and run command), README, summary report, and demo guide. The earlier 100-VU result is kept and labelled as an earlier run.
+Correction: The tester had already set `vus: 5`, but the threshold still required 100 samples, so every 5-VU run would have failed that check. A draft line in the demo guide claimed Alpha was not sized for 100 users, which is unproven; it was changed to give the actual reason (the brief asks for small checks on a shared environment). No 5-VU run has been done yet.
+
+Date: 2026-09-28
+Request: The first 5-VU k6 run failed: all 5 logins were rejected (http_req_failed 100%), with p95 389 ms.
+Produced: `login-5-vus.ts` now prints the HTTP status and the server's error message for each failed login, because the summary did not show the status. Added `scripts/run-k6.ts` and the `perf:login` and `perf:login-list` npm scripts, which run k6 with the same `.env` values that Playwright uses (Node `--env-file`). Updated the README and SLA document.
+Correction: The rejections came back quickly, which points to a credential or configuration problem rather than performance. k6 does not read `.env`, and in cmd `set VAR="value"` keeps the quotes as part of the value. The cause is not confirmed yet. Claude did not rerun k6: the brief requires a coordinated window, and more failed logins could lock the account. The 389 ms p95 measures rejected requests, so it is not evidence against the SLA.

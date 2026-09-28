@@ -84,10 +84,10 @@ The Day 5 verdict is **Go with accepted risks**. Not all Day 1 exit criteria are
 
 ## Run k6
 
-k6 does not read `.env`; export the required variables first, and run only in a coordinated window (see `day-5/performance/login-sla.md`). Run from the project root:
+Run k6 with `npm run perf:login` or `npm run perf:login-list`. These load `.env` (the same values Playwright uses) and start k6. Run them only in a coordinated window (see `day-5/performance/login-sla.md`). To run k6 directly, k6 does not read `.env`, so export the required variables first, and run only in a coordinated window (see `day-5/performance/login-sla.md`). Run from the project root:
 
 ```powershell
-k6 run day-5/performance/login-100-vus.ts
+k6 run day-5/performance/login-5-vus.ts
 k6 run day-5/performance/login-and-list.ts
 ```
 

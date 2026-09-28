@@ -9,8 +9,9 @@ export function getRequiredEnvironmentVariable(name: string): string {
   return value;
 }
 
-export function getBaseUrl(): string {
-  let value = getRequiredEnvironmentVariable('URL').trim().replace(/^['"]+|['"]+$/g, '').trim();
+/** Read a web address from an environment variable: trims spaces and quotes, adds https:// if missing, returns the origin. */
+function getWebAddress(name: string): string {
+  let value = getRequiredEnvironmentVariable(name).trim().replace(/^['"]+|['"]+$/g, '').trim();
   if (!/^https?:\/\//i.test(value)) value = `https://${value}`;
 
   try {
@@ -18,8 +19,18 @@ export function getBaseUrl(): string {
     if (!url.hostname.includes('.')) throw new Error('missing domain');
     return url.origin;
   } catch {
-    throw new Error('URL is not a valid web address. Set URL in .env (or the CI variable) to the full application address, starting with https://.');
+    throw new Error(`${name} is not a valid web address. Set ${name} in .env (or the CI variable) to the full address, starting with https://.`);
   }
+}
+
+/** The application address, from URL. */
+export function getBaseUrl(): string {
+  return getWebAddress('URL');
+}
+
+/** The API address, from LOGIN_API. */
+export function getApiBaseUrl(): string {
+  return getWebAddress('LOGIN_API');
 }
 
 /** Read an optional value while preserving its exact configured contents. */

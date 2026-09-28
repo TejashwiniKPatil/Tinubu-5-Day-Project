@@ -20,7 +20,7 @@ export const options = {
     },
   },
   thresholds: {
-    login_samples: ['count==100'],
+    login_samples: ['count==5'],
     login_latency: ['p(95)<=2000', 'p(99)<=4000'],
     login_failure: ['rate<=0.01'],
     http_req_failed: ['rate<0.01'],
@@ -81,5 +81,9 @@ export default function (): void {
 
   const loginOk = httpOk && tokenOk;
   loginFailure.add(!loginOk);
+  if (!httpOk) {
+    const reason = String(response.body || response.error || 'no response body').slice(0, 200);
+    console.warn(`Login failed: HTTP ${response.status}. ${reason}`);
+  }
   if (response.status > 0) loginLatency.add(response.timings.duration);
 }

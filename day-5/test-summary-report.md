@@ -72,7 +72,7 @@ Evidence: `day-5/performance/login-sla.md`. One 100-VU, login-only k6 run comple
 
 The run used a script version that threw while parsing empty responses, so its `login_failure` rate is invalid. The script now handles empty/error responses and records HTTP status codes, but has not been rerun. Run timestamp and build identifier were not recorded.
 
-**Status:** Failed; follow-up diagnosis and a controlled rerun are outstanding. Review API gateway/backend logs before another 100-VU run.
+**Status:** Failed. Both k6 scripts are now set to 5 VUs (`login-5-vus.ts` and `login-and-list.ts`), and a 5-VU run in a coordinated window is outstanding.
 
 ### Security
 

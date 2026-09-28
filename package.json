@@ -17,6 +17,8 @@
     "test:white-box": "node --experimental-strip-types --experimental-test-coverage --test-coverage-branches=90 --test-coverage-include=day-4/white-box/login-lockout.ts --test-coverage-include=day-4/white-box/bond-quote-validator.ts --test day-4/white-box/login-lockout.unit.test.ts day-4/white-box/bond-quote-validator.unit.test.ts",
     "test:white-box:integration": "node --experimental-strip-types --test day-4/white-box/white-box.integration.test.ts",
     "test:flaky-triage": "node --experimental-strip-types scripts/run-flaky-triage.ts",
+    "perf:login": "node --env-file=.env --experimental-strip-types scripts/run-k6.ts day-5/performance/login-5-vus.ts",
+    "perf:login-list": "node --env-file=.env --experimental-strip-types scripts/run-k6.ts day-5/performance/login-and-list.ts",
     "typecheck": "tsc --noEmit",
     "report": "playwright show-report"
   },
