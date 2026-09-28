@@ -16,6 +16,7 @@
   },
   "include": [
     "playwright.config.ts",
+    "playwright.lockout.config.ts",
     "src/**/*.ts",
     "tests/**/*.ts",
     "test-data/**/*.ts",

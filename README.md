@@ -37,7 +37,7 @@ npm run test:flaky-triage
 npm run report
 ```
 
-The standard `npm test`, regression, and high-value commands leave out the account-lockout group. Run `npm run test:full` to run the standard suite first and lockout cases last, or use `npm run test:lockout` to run only that group. Lockout cases change account state and require a dedicated resettable account configured through `LOCKOUT_TEST_USERNAME` and `LOCKOUT_TEST_PASSWORD`; reset it before running. Flaky triage excludes stateful Login and Bond Creation cases, runs the remaining Chromium suite three times, and writes evidence to a timestamped directory under `reports/flaky-triage/`.
+The standard `npm test`, regression, and high-value commands leave out the account-lockout group. Run `npm run test:full` to run the standard suite first and lockout cases last, or use `npm run test:lockout` to run only that group. `npm run test:lockout` uses `playwright.lockout.config.ts`, which skips global setup, so it never logs in with the main account. Lockout cases change account state and require a dedicated resettable account configured through `LOCKOUT_TEST_USERNAME` and `LOCKOUT_TEST_PASSWORD`; reset it before running. Flaky triage excludes stateful Login and Bond Creation cases, runs the remaining Chromium suite three times, and writes evidence to a timestamped directory under `reports/flaky-triage/`.
 
 ## Project map
 

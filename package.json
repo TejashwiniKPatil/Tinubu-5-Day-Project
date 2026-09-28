@@ -5,7 +5,7 @@
   "scripts": {
     "test": "playwright test --grep-invert @lockout",
     "test:full": "npm run test && npm run test:lockout",
-    "test:lockout": "playwright test --grep @lockout",
+    "test:lockout": "playwright test -c playwright.lockout.config.ts --grep @lockout",
     "test:smoke": "playwright test --grep @smoke",
     "test:bond-creation": "playwright test --project=chromium --grep @bond-creation",
     "test:bond-creation:smoke": "playwright test --project=chromium tests/ui/bond-creation/start-bond.spec.ts --grep @smoke",

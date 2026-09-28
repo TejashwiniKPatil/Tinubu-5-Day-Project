@@ -30,6 +30,7 @@ Primary features owned end-to-end:
 - src/pages/ - Page Object Models and their locators
 - src/fixtures/ - Shared fixtures and data-driven Login case data
 - src/global-setup.ts - Authentication state generation
+- playwright.lockout.config.ts - Config for the lockout tests only; skips global setup so the main account is never used
 - tests/ - Playwright spec files only, grouped by feature
 - tests/ui/ - Browser (UI) specs
 - tests/ui/bond-creation/ - Bond Creation specs, including sanity

@@ -173,3 +173,8 @@ Date: 2026-09-28
 Request: The first 5-VU k6 run failed: all 5 logins were rejected (http_req_failed 100%), with p95 389 ms.
 Produced: `login-5-vus.ts` now prints the HTTP status and the server's error message for each failed login, because the summary did not show the status. Added `scripts/run-k6.ts` and the `perf:login` and `perf:login-list` npm scripts, which run k6 with the same `.env` values that Playwright uses (Node `--env-file`). Updated the README and SLA document.
 Correction: The rejections came back quickly, which points to a credential or configuration problem rather than performance. k6 does not read `.env`, and in cmd `set VAR="value"` keeps the quotes as part of the value. The cause is not confirmed yet. Claude did not rerun k6: the brief requires a coordinated window, and more failed logins could lock the account. The 389 ms p95 measures rejected requests, so it is not evidence against the SLA.
+
+Date: 2026-09-28
+Request: The lockout tests should not use the global setup login.
+Produced: Added `playwright.lockout.config.ts`, which reuses the main config without `globalSetup` and runs only the `login` project (empty storage). `npm run test:lockout` now uses it, so the CI lockout step and `test:full` never log in with the main account. Added the file to `tsconfig.json`, and updated CLAUDE.md and README.
+Correction: Verified while the main account was locked: `npm run test:lockout` showed no global setup login error and went straight to the lockout tests, which stopped at the expected "Configure LOCKOUT_TEST_USERNAME…" message, because the local `.env` has no lockout account. A separate config was used instead of an environment-variable switch, so the same command works in Windows cmd and in the Linux CI runner.
