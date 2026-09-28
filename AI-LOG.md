@@ -133,3 +133,8 @@ Date: 2026-09-28
 Request: Do not hardcode the application URL; read it only from `.env`.
 Produced: Removed `DEFAULT_BASE_URL` and the fallback from `getBaseUrl()`. It now reads `URL` through `getRequiredEnvironmentVariable`, so a missing or empty value stops the run with "Required environment variable URL is not configured." The cleanup (trimming, removing quotes, adding `https://`) stays.
 Correction: The earlier version silently fell back to a built-in Alpha address, which hid missing configuration and put an environment value in code. Checked unset, empty, scheme-less, quoted, and invalid values; typecheck passes.
+
+Date: 2026-09-28
+Request: In CI, run the Login lockout tests (locked after three failed logins) after all the other suites.
+Produced: Added a final "Run Login lockout tests" step (`npm run test:lockout`, TC-011 to TC-014) after smoke, regression, and high-value, and passed `LOCKOUT_TEST_USERNAME` and `LOCKOUT_TEST_PASSWORD` from the `qa` environment secrets. Marked the regression, high-value, and lockout steps `if: ${{ !cancelled() }}`, so each suite still runs after an earlier failure. Gave each suite its own report folder with `PLAYWRIGHT_HTML_OUTPUT_DIR`, uploaded together as one artifact.
+Correction: Without separate folders, each `npm run` overwrote `playwright-report/`, so only the last suite's report would have been uploaded. Checked locally that the lockout step lists exactly the four lockout tests, that none of smoke, regression, or high-value includes them, and that the report folder variable works. The CI run itself has not been checked.

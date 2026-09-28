@@ -19,6 +19,8 @@ jobs:
       TEST_CLIENT_ID: ${{ vars.TEST_CLIENT_ID }}
       TEST_GRANT_TYPE: ${{ vars.TEST_GRANT_TYPE }}
       LOGIN_API: ${{ vars.LOGIN_API }}
+      LOCKOUT_TEST_USERNAME: ${{ secrets.LOCKOUT_TEST_USERNAME }}
+      LOCKOUT_TEST_PASSWORD: ${{ secrets.LOCKOUT_TEST_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,14 +40,30 @@ jobs:
 
       - name: Run smoke tests
         run: npm run test:smoke
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/smoke
 
       - name: Run Regression tests
+        if: ${{ !cancelled() }}
         run: npm run test:regression
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/regression
 
       - name: Run High Value tests
+        if: ${{ !cancelled() }}
         run: npm run test:high-value
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/high-value
 
-      - name: Upload HTML report
+      # Runs last on purpose: TC-011 to TC-014 lock the dedicated lockout account
+      # (three failed logins). Reset that account before the next pipeline run.
+      - name: Run Login lockout tests (after all other suites)
+        if: ${{ !cancelled() }}
+        run: npm run test:lockout
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/lockout
+
+      - name: Upload HTML reports
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
