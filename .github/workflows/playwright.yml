@@ -22,9 +22,12 @@ jobs:
     - name: Run smoke tests
       run: npm run test:smoke
       env:
-        URL: ${{ secrets.TINUBU_URL }}
-        TEST_USERNAME: ${{ secrets.TINUBU_TEST_USERNAME }}
-        TEST_PASSWORD: ${{ secrets.TINUBU_TEST_PASSWORD }}
+          URL: ${{ vars.URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          TEST_CLIENT_ID: ${{ vars.TEST_CLIENT_ID }}
+          TEST_GRANT_TYPE: ${{ vars.TEST_GRANT_TYPE }}
+          LOGIN_API: ${{ vars.LOGIN_API }}
     - name: Upload HTML report
       if: ${{ !cancelled() }}
       uses: actions/upload-artifact@v4
