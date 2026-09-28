@@ -1,0 +1,18 @@
+import { test } from '../../../src/fixtures/qa';
+
+test(
+  'TC-0xx - <exact workbook title>',
+  { tag: ['@regression', '@<feature>'] },
+  async ({ authenticatedSession, examplePage }) => {
+    void authenticatedSession;
+
+    await test.step('<what the user does>', async () => {
+      await examplePage.assertReady();
+      await examplePage.save();
+    });
+
+    await test.step('<what must be true afterwards>', async () => {
+      await examplePage.assertSaved();
+    });
+  },
+);

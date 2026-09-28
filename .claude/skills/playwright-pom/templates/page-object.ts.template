@@ -1,0 +1,27 @@
+import { expect, Locator, Page } from '@playwright/test';
+import { exampleHeading } from '../../test-data/constants';
+
+/** <One line: which page or feature this object covers.> */
+export class ExamplePage {
+  readonly page: Page;
+  readonly heading: Locator;
+  readonly primaryButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.heading = page.getByRole('heading', { name: exampleHeading });
+    this.primaryButton = page.getByRole('button', { name: 'Save', exact: true });
+  }
+
+  async assertReady(): Promise<void> {
+    await expect(this.heading).toBeVisible();
+  }
+
+  async save(): Promise<void> {
+    await this.primaryButton.click();
+  }
+
+  async assertSaved(): Promise<void> {
+    await expect(this.page.getByRole('alert')).toContainText('Saved');
+  }
+}
