@@ -13,9 +13,27 @@ export type QaFixtures = {
   profileMenu: ProfileMenu;
   bondCreationPage: BondCreationPage;
   authenticatedSession: void;
+  failureScreenshot: void;
 };
 
+const errorScreenshotDirectory = path.resolve(__dirname, '../../screenshots/Errors');
+
 export const test = base.extend<QaFixtures>({
+  failureScreenshot: [
+    async ({ page }, use, testInfo) => {
+      await use();
+      if (testInfo.status === testInfo.expectedStatus || page.isClosed()) return;
+
+      const name = `${testInfo.title}-${testInfo.project.name}-attempt-${testInfo.retry + 1}`
+        .replace(/[^A-Za-z0-9-]+/g, '-')
+        .replace(/-+/g, '-')
+        .slice(0, 150);
+      const screenshotPath = path.join(errorScreenshotDirectory, `${name}.png`);
+      await page.screenshot({ path: screenshotPath, fullPage: true });
+      await testInfo.attach('failure-screenshot', { path: screenshotPath, contentType: 'image/png' });
+    },
+    { auto: true },
+  ],
   loginPage: async ({ page }, use) => use(new LoginPage(page)),
   dashboardPage: async ({ page }, use) => use(new DashboardPage(page)),
   profileMenu: async ({ page }, use) => use(new ProfileMenu(page)),

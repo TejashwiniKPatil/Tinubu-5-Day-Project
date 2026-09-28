@@ -57,6 +57,7 @@ The standard `npm test`, regression, and high-value commands leave out the accou
 - **`tests/`:** Playwright spec files only, grouped by test type: `ui/` (with `bond-creation/` including sanity, `login/` including lockout and profile menu, and `logout/`, which runs last because it ends the shared session), `api/`, and `hybrid/` for tests that combine UI and API steps
 - **`test-data/`:** Environment-backed constants, Login data, and high-value case manifests
 - **`screenshots/ui-bugs/`:** UI defect evidence, named by the observed problem
+- **`screenshots/Errors/`:** Full-page screenshots saved automatically when a UI or hybrid test fails; CI uploads them as the `failure-screenshots` artifact
 - **`.github/workflows/`:** CI workflow: typecheck, then smoke, regression, and high-value, then the Login lockout tests last, with one HTML report per suite uploaded as an artifact
 
 `CLAUDE.md` contains project conventions and safety rules. `AI-LOG.md` records significant AI-assisted work and reviewer corrections. `.env`, `node_modules/`, `test-results/`, and `playwright-report/` are local or generated; they are excluded from version control.

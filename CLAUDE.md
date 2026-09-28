@@ -40,6 +40,7 @@ Primary features owned end-to-end:
 - File naming: kebab-case for specs, docs, and screenshots; PascalCase for Page Object and API class files
 - test-data/ - Test data
 - screenshots/ - Test evidence
+- screenshots/Errors/ - Automatic full-page screenshots of failed UI and hybrid tests
 - reports/flaky-triage/ - Generated logs and summaries (created when the triage script runs)
 - .claude/commands/ - Claude Code slash commands
 - .env - Local environment configuration; never commit

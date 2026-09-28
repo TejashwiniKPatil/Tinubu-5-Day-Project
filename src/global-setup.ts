@@ -17,10 +17,21 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     const page = await context.newPage();
     const loginPage = new LoginPage(page);
 
-    await loginPage.login(
-      getRequiredEnvironmentVariable('TEST_USERNAME'),
-      getRequiredEnvironmentVariable('TEST_PASSWORD'),
-    );
+    try {
+      await loginPage.login(
+        getRequiredEnvironmentVariable('TEST_USERNAME'),
+        getRequiredEnvironmentVariable('TEST_PASSWORD'),
+      );
+    } catch (error) {
+      
+      const screenshotPath = path.resolve(__dirname, '../screenshots/Errors/global-setup-login-failure.png');
+      await mkdir(path.dirname(screenshotPath), { recursive: true });
+      await page.screenshot({ path: screenshotPath, fullPage: true }).catch(() => undefined);
+      const pageUrl = new URL(page.url());
+      throw new Error(
+        `Global setup login failed on ${pageUrl.origin}${pageUrl.pathname}. See screenshots/Errors/global-setup-login-failure.png. ${(error as Error).message}`,
+      );
+    }
     await mkdir(path.dirname(authFile), { recursive: true });
     await context.storageState({ path: authFile, indexedDB: true });
     const sessionStorage = await page.evaluate(() => {

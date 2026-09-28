@@ -38,9 +38,14 @@ export class LoginPage {
 
   async assertAuthenticated(): Promise<void> {
     const dashboardEntry = this.page.getByTestId('dashboard-start-bond-button');
-    await expect(dashboardEntry).toBeVisible({
-      timeout:15000
-    });
+    const loginAlert = this.page.getByRole('alert');
+
+    await expect(dashboardEntry.or(loginAlert).first()).toBeVisible({ timeout: 15_000 });
+
+    if (await loginAlert.first().isVisible()) {
+      const message = (await loginAlert.first().innerText()).trim();
+      throw new Error(`Login was rejected: ${message || 'the application displayed an authentication alert.'}`);
+    }
   }
 
   async assertRejected(): Promise<void> {
