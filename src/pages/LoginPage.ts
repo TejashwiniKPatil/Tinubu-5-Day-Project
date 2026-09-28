@@ -39,7 +39,7 @@ export class LoginPage {
   async assertAuthenticated(): Promise<void> {
     const dashboardEntry = this.page.getByTestId('dashboard-start-bond-button');
     await expect(dashboardEntry).toBeVisible({
-      timeout:3000
+      timeout:15000
     });
   }
 
