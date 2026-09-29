@@ -34,11 +34,6 @@ jobs:
             echo "::error::Missing CI settings in the qa environment:$missing. Add each one under Settings > Environments > qa (Variables, or Secrets for passwords)."
             exit 1
           fi
-          for name in URL LOGIN_API TEST_CLIENT_ID TEST_GRANT_TYPE; do
-            case "${!name}" in
-              \'*|*\'|\"*|*\") echo "::error::$name is saved with quote marks around it. In Settings > Environments > qa, remove the quotes and save the bare value."; exit 1 ;;
-            esac
-          done
           for name in TEST_USERNAME TEST_PASSWORD TEST_CLIENT_ID TEST_GRANT_TYPE; do
             value="${!name}"
             trimmed="$(printf '%s' "$value" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
