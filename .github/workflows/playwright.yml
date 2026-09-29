@@ -55,10 +55,34 @@ jobs:
       - name: Type-check TypeScript
         run: npm run typecheck
 
+      - name: Run sanity tests
+        run: npm run test:sanity
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/sanity
+
       - name: Run smoke tests
+        if: ${{ !cancelled() }}
         run: npm run test:smoke
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/smoke
+      - name: Run UI tests
+        if: ${{ !cancelled() }}
+        run: npx playwright test tests/ui --grep-invert "@lockout|@e2e|@stateful-login"
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/ui
+
+      - name: Run hybrid tests
+        if: ${{ !cancelled() }}
+        run: npm run test:hybrid
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/hybrid
+
+      
+      - name: Run security tests
+        if: ${{ !cancelled() }}
+        run: npx playwright test --grep @security --grep-invert @lockout
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/security
       # - name: Run Regression tests
       #   if: ${{ !cancelled() }}
       #   run: npx playwright test --grep @regression --grep-invert "@lockout|@stateful-login"
