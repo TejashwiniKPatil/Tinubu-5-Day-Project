@@ -25,3 +25,4 @@ Turns an observation into a defect file in `day-3/defects/`, in the same shape a
 - Never change the expected result to match what the app does.
 - Quote on-screen messages exactly, including their spelling and punctuation.
 - Compare with `examples/worked-example.md` before handing the report over.
+- Never run git commands that change anything: no branches, commits, staging, pushes, or resets. The user does all git work.

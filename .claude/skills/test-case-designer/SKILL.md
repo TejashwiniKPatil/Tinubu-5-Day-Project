@@ -22,3 +22,4 @@ Designs and reviews test cases that match the Day 2 workbook, one row per case, 
 - Never put usernames, passwords, tokens, or other secrets in any column. Refer to "valid QA credentials from environment variables" instead.
 - Every case must be executable on its own: its preconditions set up everything it needs.
 - A title, ID, and scenario must stay the same in the workbook, the CSV, and any automated spec that implements it.
+- Never run git commands that change anything: no branches, commits, staging, pushes, or resets. The user does all git work.
