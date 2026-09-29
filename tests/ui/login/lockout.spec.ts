@@ -29,25 +29,25 @@ test.describe('Login lockout state transitions', () => {
     }
   });
 
-  test('TC-011 - Login reaches first failed-attempt state @high-value @regression @stateful-login @lockout', async ({ loginPage }) => {
+  test('TC-011 - Login reaches first failed-attempt state @high-value @regression @stateful-login @lockout @security', async ({ loginPage }) => {
     await loginPage.open();
     await loginPage.submit(lockoutUsername!, loginTestData.invalidPassword);
     await loginPage.assertMessageVisible(firstFailedLoginAttemptMessage);
   });
 
-  test('TC-012 - Login reaches second failed-attempt state @high-value @regression @stateful-login @lockout', async ({ loginPage }) => {
+  test('TC-012 - Login reaches second failed-attempt state @high-value @regression @stateful-login @lockout @security', async ({ loginPage }) => {
     await loginPage.open();
     await loginPage.submit(lockoutUsername!, loginTestData.invalidPassword);
     await loginPage.assertMessageVisible(secondFailedLoginAttemptMessage);
   });
 
-  test('TC-013 - Account is locked after third failed login attempt @high-value @regression @stateful-login @lockout', async ({ loginPage }) => {
+  test('TC-013 - Account is locked after third failed login attempt @high-value @regression @stateful-login @lockout @security', async ({ loginPage }) => {
     await loginPage.open();
     await loginPage.submit(lockoutUsername!, loginTestData.invalidPassword);
     await loginPage.assertMessageVisible(accountLockedMessage);
   });
 
-  test('TC-014 - Verify login cannot proceed after account reaches locked state @high-value @regression @stateful-login @lockout', async ({ loginPage }) => {
+  test('TC-014 - Verify login cannot proceed after account reaches locked state @high-value @regression @stateful-login @lockout @security', async ({ loginPage }) => {
     await loginPage.open();
     await loginPage.submit(lockoutUsername!, lockoutPassword!);
     await loginPage.assertMessageVisible(accountLockedMessage);

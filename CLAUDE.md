@@ -38,13 +38,15 @@ Primary features owned end-to-end:
 - tests/ui/logout/ - Logout spec; must sort last because it ends the shared session
 - tests/api/ - API specs
 - tests/hybrid/ - Specs that combine UI and API steps
+- tests/non-functional/ - @security, @performance, and @usability specs (SEC-001 lives in tests/ui/logout/ because it logs out)
 - File naming: kebab-case for specs, docs, and screenshots; PascalCase for Page Object and API class files
 - test-data/ - Test data
-- test-cases/ - Sanity, smoke, and regression suite lists with latest results; update them when tags change
+- test-cases/ - Sanity, smoke, and regression suite lists with latest results (update them when tags change), plus Day 5 performance, usability, and security test cases
 - screenshots/ - Test evidence
 - screenshots/Errors/ - Automatic full-page screenshots of failed UI and hybrid tests
 - reports/flaky-triage/ - Generated logs and summaries (created when the triage script runs)
 - .claude/commands/ - Claude Code slash commands
+- .claude/agents/ - Claude Code subagents; pom-reviewer is a read-only, clean-context POM reviewer (reports go in day-4/pom-subagent-review.md)
 - .env - Local environment configuration; never commit
 
 

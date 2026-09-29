@@ -23,6 +23,8 @@ export const accountLockedMessage = 'Your account has been locked. Try again in 
 export const bondCreationHeading = 'Start your Quote';
 // Renamed from 'Start New Bond'; the sanity check fails if the label changes again.
 export const startBondButtonText = 'Start a Bond';
+// The Bonds list page button kept the old label (observed 2026-09-29).
+export const allBondsStartButtonText = 'Start New Bond';
 export const agencySelectPlaceholder = 'Search select agency...';
 export const agencyName = 'TEST - *** Test Agency ***';
 
@@ -121,3 +123,13 @@ export const payload2={"actionType":1,
           {"questionTemplateId":1000158,"answer":""}]},
           {"questionGroupTemplateId":1000020,"index":1,
             "answers":[{"questionTemplateId":1000170,"answer":""}]}]}
+// Non-functional checks (@security, @performance, @usability).
+export const protectedPath = '/bonds';
+export const htmlInjectionMarker = '<b>QA-CHECK</b>';
+/** Proposed targets; they need product and QA owner approval before release use. */
+export const performanceTargets = {
+  loginPageLoadMs: 3_000,
+  dashboardReadyMs: 5_000,
+  bondStepMs: 3_000,
+  loginApiMs: 2_000,
+};

@@ -3,7 +3,7 @@ import {
   BondField,
   bondFields,
   bondNavText,
-  startBondButtonText,
+  allBondsStartButtonText,
   specialInstructionsPlaceholder,
   surchargesHeading,
   unsavedChangesMessage,
@@ -42,6 +42,7 @@ export class BondCreationPage {
   readonly submitButton: Locator;
   readonly cancelButton: Locator;
   readonly validationBanner: Locator;
+  readonly allBondsStartButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -57,6 +58,7 @@ export class BondCreationPage {
     this.submitButton = page.getByTestId('new-bond-submit-button');
     this.cancelButton = page.getByTestId('new-bond-cancel-button');
     this.validationBanner = page.getByTestId('new-bond-validation-error-banner');
+    this.allBondsStartButton = page.getByTestId('all-bonds-start-bond-button');
   }
 
   async assertAgencySelectorReady(): Promise<void> {
@@ -130,7 +132,7 @@ export class BondCreationPage {
   }
 
   async assertStartNewBondVisible(): Promise<void> {
-    await expect(this.page.getByTestId('all-bonds-start-bond-button')).toContainText(startBondButtonText);
+    await expect(this.allBondsStartButton).toContainText(allBondsStartButtonText);
   }
 
   async fillField(label: BondField, value: string): Promise<void> {
@@ -198,10 +200,31 @@ export class BondCreationPage {
     await expect(this.page.getByRole('alert')).toBeVisible();
   }
 
-  async cancelQuote(): Promise<void> {
+  async openCancelDialog(): Promise<Locator> {
     await this.cancelButton.click();
     const confirmation = this.page.getByTestId('confirmation-modal-modal-root');
     await expect(confirmation).toContainText(unsavedChangesMessage);
+    return confirmation;
+  }
+
+  /** Checks that keyboard focus has moved inside the open Cancel dialog. */
+  async assertFocusInCancelDialog(): Promise<void> {
+    const confirmation = this.page.getByTestId('confirmation-modal-modal-root');
+    await expect
+      .poll(() => confirmation.evaluate((root) => root.contains(document.activeElement)), {
+        message: 'Keyboard focus should move into the Cancel dialog',
+      })
+      .toBe(true);
+  }
+
+  /** The field's accessible name should include its visible label, so screen readers announce it. */
+  async assertAccessibleName(label: BondField): Promise<void> {
+    const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    await expect(this.field(label)).toHaveAccessibleName(new RegExp(escaped, 'i'));
+  }
+
+  async cancelQuote(): Promise<void> {
+    await this.openCancelDialog();
     await this.page.getByTestId('confirmation-modal-submit-button').click();
     await expect(this.page).toHaveURL(/\/bonds(?:\?.*)?$/);
   }
@@ -209,7 +232,7 @@ export class BondCreationPage {
   async startAnotherBondFromNavigation(): Promise<void> {
     // The navbar Bonds button has no data-testid, so it is found by its text inside the navbar.
     await this.page.getByTestId('app-navbar').getByRole('button', { name: bondNavText, exact: true }).click();
-    await this.page.getByTestId('all-bonds-start-bond-button').click();
+    await this.allBondsStartButton.click();
     await this.assertAgencySelectorReady();
   }
 

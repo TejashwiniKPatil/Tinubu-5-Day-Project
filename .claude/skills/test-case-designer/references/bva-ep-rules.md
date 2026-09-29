@@ -28,4 +28,4 @@ Required. Defaults to today's date.
 System-calculated and read-only.
 
 ### Pre Pay Selection
-Required. Available options are 1 year, 2 year, and 3 year. Another bond type observed (Annual, PrePaidDuration=5) accepts 1 through 5 years and offers a "5 Years" option (DEF-011).
+Required. The options shown are "1 Year", "2 Years", and "3 Years" (observed 2026-09-29). Another bond type observed (Annual, PrePaidDuration=5) accepts 1 through 5 years and offers a "5 Years" option (DEF-011).

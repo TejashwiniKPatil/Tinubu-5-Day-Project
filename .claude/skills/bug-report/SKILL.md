@@ -1,33 +1,27 @@
 ---
 name: bug-report
-description: "Use when converting QA notes, failed tests, or observed application behavior into a reproducible defect report with severity, priority, evidence, and lifecycle status."
+description: "Use when converting QA notes, failed tests, exploratory findings, accessibility or security results, or observed application behavior into a reproducible Tinubu Surety defect report (DEF-###) with severity, priority, evidence, and lifecycle status. Also use when retesting, triaging, overriding severity or priority, or moving a defect through its lifecycle."
 ---
 
-# Bug Report Skill
+# Bug Report
 
-Use this skill when a test fails or observed application behavior differs from the documented expectation.
+Turns an observation into a defect file in `day-3/defects/`, in the same shape as the existing DEF-001 to DEF-011.
 
-## Required Report
+## Workflow
 
-1. Defect ID and title using the format `[Module] concise observed problem`.
-2. Environment, browser, build or URL, date, and test data without secrets.
-3. Preconditions.
-4. Numbered reproduction steps.
-5. Expected result.
-6. Actual result.
-7. Evidence path for screenshot, trace, console output, or network observation.
-8. Severity recommendation with impact reasoning.
-9. Priority recommendation with business urgency reasoning.
-10. Lifecycle status such as New, Triaged, In Progress, Fixed, Ready for Retest, Reopened, Rejected, Deferred, or Closed.
+1. **Separate facts from guesses.** List what was actually seen (screen text, status codes, values) and where the evidence is. Mark anything not seen as an assumption. If there is no evidence yet, say so; do not write the defect as confirmed.
+2. **Check it is new.** Search `day-3/defects/` for the same module and symptom. If it matches an open defect, add the new evidence there instead of creating a duplicate.
+3. **Take the next ID** (`references/defect-writing-rules.md`) and name the file `DEF-###-kebab-case-summary.md`.
+4. **Fill in `templates/defect-report.md`**, following the field rules in `references/defect-writing-rules.md` and the evidence rules in `references/evidence-rules.md`.
+5. **Recommend severity and priority** with `references/severity-priority-guide.md`, and give a one-line reason for each.
+6. **Set the lifecycle status** with `references/lifecycle.md`. A new defect is `New`.
+7. **Record overrides.** If anyone changes the recommended severity or priority, add an entry to `day-3/bug-report-override-log.md` with `templates/override-entry.md`.
+8. **Link it.** Name the defect in the failing test case's Actual Result, and name the blocked test cases in the defect's Impact.
 
-## Rules
+## Hard rules
 
-- Separate observed facts from assumptions.
-- Never include usernames, passwords, tokens, or other secrets.
-- Do not claim reproducibility without recording the execution evidence.
-- Do not change the expected result to make a failed test pass.
-- Record every override when the recommended severity or priority is changed.
-
-## Output
-
-Return a structured defect report followed by open questions and an override record when applicable.
+- Never include usernames, passwords, tokens, cookies, or other secrets, in the text or in screenshots.
+- Do not claim a defect is reproducible without recorded execution evidence.
+- Never change the expected result to match what the app does.
+- Quote on-screen messages exactly, including their spelling and punctuation.
+- Compare with `examples/worked-example.md` before handing the report over.

@@ -12,6 +12,9 @@
     "test:regression": "playwright test --grep @regression --grep-invert @lockout",
     "test:sanity": "playwright test --grep @sanity",
     "test:hybrid": "playwright test --grep @hybrid",
+    "test:security": "playwright test --grep @security --grep-invert \"@lockout|@stateful-login\"",
+    "test:performance": "playwright test --grep @performance",
+    "test:usability": "playwright test --grep @usability",
     "test:high-value": "playwright test --grep @high-value --grep-invert @lockout",
     "test:list": "playwright test --list",
     "test:white-box": "node --experimental-strip-types --experimental-test-coverage --test-coverage-branches=90 --test-coverage-include=day-4/white-box/login-lockout.ts --test-coverage-include=day-4/white-box/bond-quote-validator.ts --test day-4/white-box/login-lockout.unit.test.ts day-4/white-box/bond-quote-validator.unit.test.ts",
@@ -30,6 +33,7 @@
     "node": ">=24"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
     "@types/k6": "^2.2.1",
     "@types/node": "^26.6.2",
