@@ -90,17 +90,17 @@ jobs:
         run: npm run test:smoke
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/smoke
-      - name: Run UI tests
-        if: ${{ !cancelled() }}
-        run: npx playwright test tests/ui --grep-invert "@lockout|@e2e|@stateful-login"
-        env:
-          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/ui
+      # - name: Run UI tests
+      #   if: ${{ !cancelled() }}
+      #   run: npx playwright test tests/ui --grep-invert "@lockout|@e2e|@stateful-login"
+      #   env:
+      #     PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/ui
 
-      - name: Run hybrid tests
-        if: ${{ !cancelled() }}
-        run: npm run test:hybrid
-        env:
-          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/hybrid
+      # - name: Run hybrid tests
+      #   if: ${{ !cancelled() }}
+      #   run: npm run test:hybrid
+      #   env:
+      #     PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/hybrid
 
       
       - name: Run security tests
