@@ -218,9 +218,18 @@ export class BondCreationPage {
   }
 
   /** The field's accessible name should include its visible label, so screen readers announce it. */
-  async assertAccessibleName(label: BondField): Promise<void> {
-    const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    await expect(this.field(label)).toHaveAccessibleName(new RegExp(escaped, 'i'));
+  async fieldsNotNamedByLabel(labels: BondField[]): Promise<string[]> {
+    const mismatches: string[] = [];
+    for (const label of labels) {
+      const field = this.field(label);
+      await expect(field).toBeVisible();
+      const snapshot = await field.ariaSnapshot();
+      const announced = /"(.*)"/.exec(snapshot)?.at(1) ?? '';
+      if (!announced.toLowerCase().includes(label.toLowerCase())) {
+        mismatches.push(`${label}: announced as "${announced}"`);
+      }
+    }
+    return mismatches;
   }
 
   async cancelQuote(): Promise<void> {

@@ -20,3 +20,4 @@ Use this skill whenever you add or change Playwright code in this repository, so
 - No hardcoded credentials. Read them from environment variables.
 - High-value tests must pass or fail, never skip. Missing data or accounts make the test fail with a message naming what to configure.
 - Tests that create records are tagged `@stateful-bond` or `@stateful-login`.
+- Comments are short: one line, only where the code does not explain itself. See `references/conventions.md`, "Comments".

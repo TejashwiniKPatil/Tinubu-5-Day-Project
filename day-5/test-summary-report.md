@@ -90,14 +90,16 @@ Five Nielsen findings are recorded (UX-01 to UX-05). Three have screenshots; UX-
 
 ### Alpha application
 
-- **High:** 4
-- **Medium:** 2
+- **High:** 3
+- **Medium:** 3
 - **Low:** 5
+
+Counted by severity, as recorded in each defect file.
 
 All 11 defects are New.
 
-- High: DEF-001 (long login input returns HTTP 500), DEF-002 (submit blocked despite an attached principal company), DEF-004 (created principal disappears after refresh), DEF-005 (identical create-bond requests create duplicates).
-- Medium: DEF-003 (500-character note breaks layout), DEF-008 (company saved as "Unknown").
+- High: DEF-001 (long login input returns HTTP 500), DEF-002 (submit blocked despite an attached principal company), DEF-005 (identical create-bond requests create duplicates).
+- Medium: DEF-003 (500-character note breaks layout), DEF-004 (created principal disappears after refresh; High priority), DEF-008 (company saved as "Unknown").
 - Low: DEF-006, DEF-007, DEF-009, DEF-010, DEF-011 (validation messaging and cosmetic issues).
 
 DEF-002 and DEF-006 to DEF-011 come from the Bond Creation exploratory session. DEF-002 blocks quote submission, so TC-044 and TC-045 cannot pass while it is open.
@@ -110,11 +112,11 @@ The Day 1 test plan maps Severity-1 to High and Severity-2 to Medium. Open Alpha
 
 ### Zero open Severity-1 defects
 
-**Verdict:** Not met. DEF-001, DEF-002, DEF-004, and DEF-005 remain open High (Severity-1).
+**Verdict:** Not met. DEF-001, DEF-002, and DEF-005 remain open High (Severity-1).
 
 ### Zero open Severity-2 defects
 
-**Verdict:** Not met. DEF-003 and DEF-008 remain open Medium (Severity-2).
+**Verdict:** Not met. DEF-003, DEF-004, and DEF-008 remain open Medium (Severity-2).
 
 ### 100% of smoke tests passed
 
@@ -152,7 +154,7 @@ By the strict Day 1 exit criteria, the release does not qualify: the Severity-1,
 - **DEF-002 (High):** Quote submission is blocked in the attached-principal path until it is fixed.
 - **DEF-005 (High):** A repeated create-bond request creates a duplicate bond (reproduced on 2026-09-28: BondId 1012032 and 1012033).
 - **DEF-001 (High):** Very long login input returns HTTP 500.
-- **DEF-004 (High):** A created principal disappears after refresh.
+- **DEF-004 (Medium severity, High priority):** A created principal disappears after refresh.
 - **DEF-003 and DEF-008 (Medium):** A long note breaks the layout, and an incomplete company is saved as "Unknown".
 - **Coverage:** 26 of the 45 workbook cases, the security checklist, and the accessibility pass have not been executed.
 

@@ -66,6 +66,13 @@ When text appears more than once on a page, scope the locator. For example, find
 - Read QA records, such as the principal or underwriter, from `.env` through `test-data/bondCreationData.ts`.
 - When required data is missing, fail with a message naming the variable, as `requireData()` does. Do not skip.
 
+## Comments
+
+- One line per comment. Never write a comment of 2 or 3 lines.
+- Say why, not what: `// No data-testid on the logo; alt text is the only hook.`, not a description of the next line.
+- Leave out comments the code already makes clear, such as method names like `openAddAttachment()`.
+- JSDoc on a Page Object method is one line too: `/** Reloads so the check proves the attachment was saved. */`.
+
 ## Verification
 
 1. Run `npm run typecheck`.

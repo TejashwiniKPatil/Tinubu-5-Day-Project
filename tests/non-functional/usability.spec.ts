@@ -105,11 +105,7 @@ test.describe('Usability checks on the quote form', () => {
       bondFields.stateOfIncorporation,
       bondFields.underwriter,
     ];
-    for (const field of fields) {
-      await expect.soft(async () => bondCreationPage.assertAccessibleName(field), `${field} accessible name`).toPass({
-        timeout: 5_000,
-      });
-    }
+    expect(await bondCreationPage.fieldsNotNamedByLabel(fields), 'Fields not announced by their label').toEqual([]);
   });
 
   test('USA-008 - Cancel dialog takes keyboard focus', { tag: [...tags, '@bond-creation'] }, async ({

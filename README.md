@@ -72,7 +72,7 @@ The standard `npm test`, regression, and high-value commands leave out the accou
 
 The workbook records 45 test cases. The Day 3 execution note reports 17 passed, 2 failed, and 26 not executed. These results are not a release pass: the failed and unexecuted cases remain outstanding, and sanity evidence is not recorded as completed. The 10-case `@smoke` suite passed locally on 2026-09-25. The tag now selects 13 tests, because API-001, API-002, and TC-018 were tagged after that run. See `day-5/test-summary-report.md`.
 
-The Bond Creation exploratory session found seven bugs (DEF-002, DEF-006 to DEF-011). With the earlier reports, there are 11 open Alpha defects: 4 High, 2 Medium, and 5 Low. The Login exploratory session and the error guesses have not been executed yet.
+The Bond Creation exploratory session found seven bugs (DEF-002, DEF-006 to DEF-011). With the earlier reports, there are 11 open Alpha defects: 3 High, 3 Medium, and 5 Low by severity. The Login exploratory session and the error guesses have not been executed yet.
 
 The decision table in `day-2/decision-table.md` combines credit tier, bond amount, indemnitor, and prior claims into 8 rules (TC-049 to TC-056). Two rules match observed Alpha behaviour; the others say "requirement to confirm", because Alpha's approval matrix is not documented. The bond lifecycle, with a state diagram, is in `day-2/bond-lifecycle-state-transitions.md` (TC-057 to TC-067).
 
@@ -86,7 +86,7 @@ The white-box unit run enforces at least 90% branch coverage and reached 94.29%.
 
 ## Current release position
 
-The Day 5 verdict is **Go with accepted risks**. Not all Day 1 exit criteria are met: 11 defects remain open, including 4 High (DEF-002 blocks quote submission in one path, and DEF-005 creates duplicate bonds), and regression execution is incomplete. The pod accepts these risks on condition that DEF-002 and DEF-005 are fixed first and the remaining defects and cases are completed in the next cycle. See `day-5/test-summary-report.md`; do not describe planned or missing execution evidence as completed.
+The Day 5 verdict is **Go with accepted risks**. Not all Day 1 exit criteria are met: 11 defects remain open, including 3 High (DEF-002 blocks quote submission in one path, and DEF-005 creates duplicate bonds), and regression execution is incomplete. The pod accepts these risks on condition that DEF-002 and DEF-005 are fixed first and the remaining defects and cases are completed in the next cycle. See `day-5/test-summary-report.md`; do not describe planned or missing execution evidence as completed.
 
 ## Run k6
 
