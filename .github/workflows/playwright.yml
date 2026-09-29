@@ -82,7 +82,7 @@ jobs:
 
       - name: Run End to End tests
         if: ${{ !cancelled() }}
-        run: npx playwright test --grep @e2e --grep-invert "@lockout|@stateful-login"
+        run: npx playwright test --grep @e2e
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/e2e
 
