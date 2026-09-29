@@ -4,6 +4,7 @@ import {
   missingBondCreationData,
 } from '../../../test-data/bondCreationData';
 import { bondCreationHighValueCases } from '../../../test-data/bondCreationCases';
+import { bondFields, quoteHeaderLabels } from '../../../test-data/constants';
 import {
   fillRequiredQuoteData,
   openBondSelection,
@@ -75,10 +76,10 @@ test(
     void authenticatedSession;
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await bondCreationPage.assertQuoteContext({
-      Agency: bondCreationData.agencyHeader,
-      State: bondCreationData.state,
-      Carrier: bondCreationData.carrier,
-      'Bond Type': bondCreationData.bondTypeName,
+      [quoteHeaderLabels.agency]: bondCreationData.agencyHeader,
+      [quoteHeaderLabels.state]: bondCreationData.state,
+      [quoteHeaderLabels.carrier]: bondCreationData.carrier,
+      [quoteHeaderLabels.bondType]: bondCreationData.bondTypeName,
     });
   },
 );
@@ -101,9 +102,9 @@ test(
   async ({ authenticatedSession, dashboardPage, bondCreationPage }) => {
     void authenticatedSession;
     await openConfiguredQuote(dashboardPage, bondCreationPage);
-    await bondCreationPage.fillField('Bond Amount', '0');
-    await bondCreationPage.blurField('Bond Amount');
-    const displayedAmount = await bondCreationPage.fieldValue('Bond Amount');
+    await bondCreationPage.fillField(bondFields.bondAmount, '0');
+    await bondCreationPage.blurField(bondFields.bondAmount);
+    const displayedAmount = await bondCreationPage.fieldValue(bondFields.bondAmount);
     expect(displayedAmount.replace(/[^\d.-]/g, '')).toBe('0');
   },
 );
@@ -116,8 +117,8 @@ test(
     requireData(['principalSearch', 'underwriter']);
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await fillRequiredQuoteData(bondCreationPage, '10000');
-    await bondCreationPage.fillField('Bond Amount', '-1');
-    await bondCreationPage.submitQuoteWithInvalidAmount('Bond Amount');
+    await bondCreationPage.fillField(bondFields.bondAmount, '-1');
+    await bondCreationPage.submitQuoteWithInvalidAmount(bondFields.bondAmount);
   },
 );
 
@@ -127,9 +128,9 @@ test(
   async ({ authenticatedSession, dashboardPage, bondCreationPage }) => {
     void authenticatedSession;
     await openConfiguredQuote(dashboardPage, bondCreationPage);
-    await bondCreationPage.fillField('Bond Amount', '40000000');
-    await bondCreationPage.blurField('Bond Amount');
-    const displayedAmount = await bondCreationPage.fieldValue('Bond Amount');
+    await bondCreationPage.fillField(bondFields.bondAmount, '40000000');
+    await bondCreationPage.blurField(bondFields.bondAmount);
+    const displayedAmount = await bondCreationPage.fieldValue(bondFields.bondAmount);
     expect(displayedAmount.replace(/[^\d.-]/g, '')).toBe('40000000');
   },
 );
@@ -142,8 +143,8 @@ test(
     requireData(['principalSearch', 'underwriter']);
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await fillRequiredQuoteData(bondCreationPage, '10000');
-    await bondCreationPage.fillField('Bond Amount', '40000001');
-    await bondCreationPage.submitQuoteWithInvalidAmount('Bond Amount');
+    await bondCreationPage.fillField(bondFields.bondAmount, '40000001');
+    await bondCreationPage.submitQuoteWithInvalidAmount(bondFields.bondAmount);
   },
 );
 
@@ -154,9 +155,9 @@ test(
     void authenticatedSession;
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await bondCreationPage.assertFieldsBlank([
-      'Contractor License Number',
-      'Contractor License Effective Date',
-      'Contractor License Bond Amount',
+      bondFields.contractorLicenseNumber,
+      bondFields.contractorLicenseEffectiveDate,
+      bondFields.contractorLicenseBondAmount,
     ]);
     await bondCreationPage.assertSurchargesVisible();
   },
@@ -171,21 +172,21 @@ test(
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await bondCreationPage.checkProofOfInsurance();
     await bondCreationPage.assertCheckboxChecked();
-    await bondCreationPage.selectOption('Business Structure', bondCreationData.businessStructure!);
-    await bondCreationPage.selectOption('State of Incorporation', bondCreationData.stateOfIncorporation!);
-    await bondCreationPage.fillField('How many years have you held this license?', bondCreationData.yearsHeldLicense!);
+    await bondCreationPage.selectOption(bondFields.businessStructure, bondCreationData.businessStructure!);
+    await bondCreationPage.selectOption(bondFields.stateOfIncorporation, bondCreationData.stateOfIncorporation!);
+    await bondCreationPage.fillField(bondFields.yearsHeldLicense, bondCreationData.yearsHeldLicense!);
     await bondCreationPage.fillField(
-      'Percentage of business done in state of incorporation',
+      bondFields.businessPercentage,
       bondCreationData.businessPercentage!,
     );
-    expect(await bondCreationPage.fieldValue('Business Structure')).toBe(bondCreationData.businessStructure);
-    expect(await bondCreationPage.fieldValue('State of Incorporation')).toBe(
+    expect(await bondCreationPage.fieldValue(bondFields.businessStructure)).toBe(bondCreationData.businessStructure);
+    expect(await bondCreationPage.fieldValue(bondFields.stateOfIncorporation)).toBe(
       bondCreationData.stateOfIncorporation,
     );
-    expect(await bondCreationPage.fieldValue('How many years have you held this license?')).toBe(
+    expect(await bondCreationPage.fieldValue(bondFields.yearsHeldLicense)).toBe(
       bondCreationData.yearsHeldLicense,
     );
-    expect(await bondCreationPage.fieldValue('Percentage of business done in state of incorporation')).toBe(
+    expect(await bondCreationPage.fieldValue(bondFields.businessPercentage)).toBe(
       bondCreationData.businessPercentage,
     );
   },
@@ -198,9 +199,9 @@ test(
     void authenticatedSession;
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     for (const value of ['3', '90']) {
-      await bondCreationPage.fillField('Value (%)', value);
-      await bondCreationPage.blurField('Value (%)');
-      expect(await bondCreationPage.fieldValue('Value (%)')).toBe(value);
+      await bondCreationPage.fillField(bondFields.modifierValue, value);
+      await bondCreationPage.blurField(bondFields.modifierValue);
+      expect(await bondCreationPage.fieldValue(bondFields.modifierValue)).toBe(value);
     }
   },
 );
@@ -214,11 +215,11 @@ test(
     await openConfiguredQuote(dashboardPage, bondCreationPage);
     await fillRequiredQuoteData(bondCreationPage, '10000');
     if (bondCreationData.producer) {
-      await bondCreationPage.selectOption('Assigned Producer', bondCreationData.producer);
+      await bondCreationPage.selectOption(bondFields.producer, bondCreationData.producer);
     }
     const specialInstructions = 'A'.repeat(500);
-    await bondCreationPage.fillField('Special Instructions', specialInstructions);
-    expect(await bondCreationPage.fieldValue('Special Instructions')).toBe(specialInstructions);
+    await bondCreationPage.fillField(bondFields.specialInstructions, specialInstructions);
+    expect(await bondCreationPage.fieldValue(bondFields.specialInstructions)).toBe(specialInstructions);
     await bondCreationPage.submitQuoteSuccessfully();
   },
 );

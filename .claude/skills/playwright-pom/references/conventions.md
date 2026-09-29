@@ -15,13 +15,14 @@
 
 ## Locators
 
-Prefer them in this order:
+UI wording in Alpha changes often, so prefer them in this order:
 
-1. `getByRole()` with an accessible name, for example `getByRole('button', { name: 'Sign In' })`
-2. `getByLabel()` for form fields
-3. `getByPlaceholder()` or `getByText()` with `exact: true`
-4. `getByTestId()`, which uses the `data-testid` attribute
-5. A CSS attribute selector only when a test ID contains a changing number. Match its stable prefix and suffix, as `bondFormCards` does.
+1. `getByTestId()`, which uses the `data-testid` attribute. Inspect the live page for one before falling back.
+2. A CSS attribute selector when a test ID contains a changing number. Match its stable prefix and suffix, as `bondFormCards` does.
+3. `getByRole()` without a name (for example `alert`), or with a name taken from data or constants
+4. `getByLabel()`, `getByPlaceholder()`, or `getByText()` with `exact: true`, only when the element has no test ID
+
+Never hardcode UI text in a Page Object or spec. Keep it in `test-data/constants.ts` (for example `bondNavText`, `bondFields`) so a wording change is a one-line fix.
 
 Avoid XPath, generated CSS class names (for example `_tagValue_a4asz_69`), and index-based selection such as `.nth(2)`.
 

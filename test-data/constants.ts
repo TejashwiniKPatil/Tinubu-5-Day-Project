@@ -21,8 +21,46 @@ export const secondFailedLoginAttemptMessage =
 export const accountLockedMessage = 'Your account has been locked. Try again in 15 minutes.';
 
 export const bondCreationHeading = 'Start your Quote';
+// Renamed from 'Start New Bond'; the sanity check fails if the label changes again.
+export const startBondButtonText = 'Start a Bond';
 export const agencySelectPlaceholder = 'Search select agency...';
 export const agencyName = 'TEST - *** Test Agency ***';
+
+// UI text used only where the element has no data-testid. Update here when the app wording changes.
+export const bondNavText = 'Bonds';
+export const surchargesHeading = 'Surcharges & Discounts';
+export const specialInstructionsPlaceholder = 'Add special instructions (optional)...';
+export const unsavedChangesMessage =
+  'You have unsaved changes. Are you sure you want to leave without saving?';
+export const quoteHeaderLabels = {
+  agency: 'Agency',
+  state: 'State',
+  carrier: 'Carrier',
+  bondType: 'Bond Type',
+};
+
+/** Bond Creation field names; BondCreationPage maps each to its data-testid. */
+export const bondFields = {
+  bondAmount: 'Bond Amount',
+  prePay: 'Pre Pay Selection',
+  existingBondNumber: 'Existing Bond Number',
+  effectiveDate: 'Effective Date',
+  expirationDate: 'Expiration Date',
+  bondUserVersion: 'Bond User Version',
+  contractorLicenseNumber: 'Contractor License Number',
+  contractorLicenseEffectiveDate: 'Contractor License Effective Date',
+  contractorLicenseBondAmount: 'Contractor License Bond Amount',
+  businessStructure: 'Business Structure',
+  stateOfIncorporation: 'State of Incorporation',
+  yearsHeldLicense: 'How many years have you held this license?',
+  businessPercentage: 'Percentage of business done in state of incorporation',
+  modifierValue: 'Value (%)',
+  underwriter: 'Assigned Underwriter',
+  producer: 'Assigned Producer',
+  specialInstructions: 'Special Instructions',
+} as const;
+export type BondField = (typeof bondFields)[keyof typeof bondFields];
+export const prePayOneYear = '1 Year';
 
 
 export const clientId = process.env.TEST_CLIENT_ID ?? '';

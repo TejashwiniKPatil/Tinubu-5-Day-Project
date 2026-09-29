@@ -1,4 +1,5 @@
 import { bondCreationData, missingBondCreationData } from '../../test-data/bondCreationData';
+import { bondFields, prePayOneYear } from '../../test-data/constants';
 import { BondCreationPage } from '../pages/BondCreationPage';
 import { DashboardPage } from '../pages/DashboardPage';
 
@@ -34,10 +35,10 @@ export async function fillRequiredQuoteData(
   if (missing.length) throw new Error(`Configure ${missing.join(', ')} in .env for this case.`);
 
   await bondCreationPage.searchAndSelectPrincipal(bondCreationData.principalSearch!);
-  await bondCreationPage.fillField('Bond Amount', amount);
-  await bondCreationPage.selectOption('Pre Pay Selection', '1 Year');
+  await bondCreationPage.fillField(bondFields.bondAmount, amount);
+  await bondCreationPage.selectOption(bondFields.prePay, prePayOneYear);
   if (bondCreationData.effectiveDate) {
-    await bondCreationPage.fillField('Effective Date', bondCreationData.effectiveDate);
+    await bondCreationPage.fillField(bondFields.effectiveDate, bondCreationData.effectiveDate);
   }
-  await bondCreationPage.selectOption('Assigned Underwriter', bondCreationData.underwriter!);
+  await bondCreationPage.selectOption(bondFields.underwriter, bondCreationData.underwriter!);
 }

@@ -10,7 +10,7 @@
 
 **Severity:** Medium
 
-**Evidence:** User-provided screenshot recorded in [DEF-003](../day-3/defects/DEF-003-bond-note-overflows-layout.md).
+**Evidence:**  screenshot recorded in [DEF-003](../day-3/defects/DEF-003-bond-note-overflows-layout.md).
 
 **Status:** Observed once; retest and build details are pending.
 

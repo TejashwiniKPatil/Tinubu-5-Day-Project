@@ -2,7 +2,7 @@ import { expect, test } from '../../src/fixtures/qa';
 import { CreateBondApi } from '../../src/api/CreateBondApi';
 import { LoginApi } from '../../src/api/LoginApi';
 import { openConfiguredQuote } from '../../src/helpers/bondCreation';
-import { clientId, grantType, PASSWORD, payload2, USERNAME } from '../../test-data/constants';
+import { bondFields, clientId, grantType, PASSWORD, payload2, USERNAME } from '../../test-data/constants';
 
 // The same boundary checked through both layers: the quote form must accept the
 // $40,000,000 maximum, and the create-bond API must accept a bond at that penalty.
@@ -15,9 +15,9 @@ test(
 
     await test.step('UI: the quote form keeps the maximum bond amount', async () => {
       await openConfiguredQuote(dashboardPage, bondCreationPage);
-      await bondCreationPage.fillField('Bond Amount', String(payload2.penalty));
-      await bondCreationPage.blurField('Bond Amount');
-      const displayedAmount = await bondCreationPage.fieldValue('Bond Amount');
+      await bondCreationPage.fillField(bondFields.bondAmount, String(payload2.penalty));
+      await bondCreationPage.blurField(bondFields.bondAmount);
+      const displayedAmount = await bondCreationPage.fieldValue(bondFields.bondAmount);
       expect(displayedAmount.replace(/[^\d.-]/g, '')).toBe(String(payload2.penalty));
     });
 

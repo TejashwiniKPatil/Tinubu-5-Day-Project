@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { loginLabels, signInText } from '../../test-data/constants';
+import { loginLabels } from '../../test-data/constants';
 
 export class LoginPage {
   readonly page: Page;
@@ -9,19 +9,22 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.getByLabel(loginLabels.username);
-    this.passwordInput = page.getByLabel(loginLabels.password);
-    this.signInButton = page.getByRole('button', { name: signInText });
+    this.usernameInput = page.getByTestId('login-username-input');
+    this.passwordInput = page.getByTestId('login-password-input');
+    this.signInButton = page.getByTestId('login-submit-button');
   }
 
   async open(): Promise<void> {
     await this.page.goto('/', { waitUntil: 'domcontentloaded' });
   }
 
+  /** Also checks the visible labels, because TC-008 verifies how the fields are identified. */
   async assertFormVisible(): Promise<void> {
     await expect(this.usernameInput).toBeVisible();
     await expect(this.passwordInput).toBeVisible();
     await expect(this.signInButton).toBeVisible();
+    await expect(this.page.getByLabel(loginLabels.username)).toBeVisible();
+    await expect(this.page.getByLabel(loginLabels.password)).toBeVisible();
   }
 
   async submit(username: string, password: string): Promise<void> {

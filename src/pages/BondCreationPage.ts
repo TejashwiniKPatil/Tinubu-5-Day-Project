@@ -1,4 +1,33 @@
 import { expect, Locator, Page } from '@playwright/test';
+import {
+  BondField,
+  bondFields,
+  bondNavText,
+  startBondButtonText,
+  specialInstructionsPlaceholder,
+  surchargesHeading,
+  unsavedChangesMessage,
+} from '../../test-data/constants';
+
+/** data-testids observed on the quote form; text lives in test-data/constants.ts. */
+const fieldTestIds: Partial<Record<BondField, string>> = {
+  [bondFields.bondAmount]: 'new-bond-initial-info-penalty-amount-range-input',
+  [bondFields.prePay]: 'new-bond-initial-info-pre-pay-select',
+  [bondFields.existingBondNumber]: 'new-bond-initial-info-existing-bond-number-input',
+  [bondFields.effectiveDate]: 'new-bond-initial-info-effective-date-input',
+  [bondFields.expirationDate]: 'new-bond-initial-info-expiration-date-input',
+  [bondFields.bondUserVersion]: 'new-bond-initial-info-bond-user-version-input',
+  [bondFields.contractorLicenseNumber]: 'new-bond-dynamic-field-q-500073-text-input',
+  [bondFields.contractorLicenseEffectiveDate]: 'new-bond-dynamic-field-q-500075-date-input',
+  [bondFields.contractorLicenseBondAmount]: 'new-bond-dynamic-field-q-500076-money-input',
+  [bondFields.businessStructure]: 'new-bond-dynamic-field-q-500078-select',
+  [bondFields.stateOfIncorporation]: 'new-bond-dynamic-field-q-500079-state-select',
+  [bondFields.yearsHeldLicense]: 'new-bond-dynamic-field-q-500074-number-input',
+  [bondFields.businessPercentage]: 'new-bond-dynamic-field-q-500080-decimal-input',
+  [bondFields.modifierValue]: 'nb-sd-value-1000002',
+  [bondFields.underwriter]: 'new-bond-team-underwriter-select',
+  [bondFields.producer]: 'new-bond-team-producer-select',
+};
 
 /** Interactions for the inspected Bond Selection and Start your Quote screens. */
 export class BondCreationPage {
@@ -9,6 +38,10 @@ export class BondCreationPage {
   readonly principalSearch: Locator;
   readonly bondFormCards: Locator;
   readonly bondForm: Locator;
+  readonly proofOfInsuranceCheckbox: Locator;
+  readonly submitButton: Locator;
+  readonly cancelButton: Locator;
+  readonly validationBanner: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -20,6 +53,10 @@ export class BondCreationPage {
       '[data-testid^="new-bond-form-card-bond-form-"][data-testid$="-row"]',
     );
     this.bondForm = page.getByTestId('new-bond-main-content');
+    this.proofOfInsuranceCheckbox = page.getByTestId('new-bond-dynamic-field-q-500077-checkbox');
+    this.submitButton = page.getByTestId('new-bond-submit-button');
+    this.cancelButton = page.getByTestId('new-bond-cancel-button');
+    this.validationBanner = page.getByTestId('new-bond-validation-error-banner');
   }
 
   async assertAgencySelectorReady(): Promise<void> {
@@ -52,12 +89,12 @@ export class BondCreationPage {
     await this.bondTypeSearch.fill(formName);
     const card = this.bondFormCards.filter({ hasText: formName });
     await expect(card).toHaveCount(1);
-    await card.getByRole('button', { name: 'Select', exact: true }).click();
+    await card.locator('[data-testid$="-select-button"]').click();
     await this.assertQuoteFormVisible(quoteTitle);
   }
 
   async assertQuoteFormVisible(bondType: string): Promise<void> {
-    await expect(this.page.getByRole('heading', { name: 'Start your Quote' })).toBeVisible();
+    await expect(this.submitButton).toBeVisible();
     await expect(this.page.getByText(bondType, { exact: true }).last()).toBeVisible();
   }
 
@@ -71,10 +108,13 @@ export class BondCreationPage {
 
   async searchAndSelectPrincipal(name: string): Promise<void> {
     await this.principalSearch.fill(name);
-    const result = this.page.getByText(name, { exact: true }).last();
-    await expect(result).toBeVisible();
-    await result.click();
-    await expect(this.page.getByText(name, { exact: true }).last()).toBeVisible();
+    const results = this.page.getByTestId('principal-search-dropdown');
+    const result = results.getByTestId('principal-search-result').filter({
+      has: this.page.getByText(name, { exact: true }),
+    });
+    await expect(result.first()).toBeVisible();
+    await result.first().click();
+    await expect(results).toBeHidden();
   }
 
   async assertPrincipalVisible(name: string): Promise<void> {
@@ -82,56 +122,64 @@ export class BondCreationPage {
   }
 
   async assertSurchargesVisible(): Promise<void> {
-    await expect(this.page.getByRole('heading', { name: 'Surcharges & Discounts', exact: true })).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: surchargesHeading, exact: true })).toBeVisible();
   }
 
   async checkProofOfInsurance(): Promise<void> {
-    await this.page.getByLabel('Contractor Has Proof Of Insurance', { exact: true }).check();
+    await this.proofOfInsuranceCheckbox.check();
   }
 
   async assertStartNewBondVisible(): Promise<void> {
-    await expect(this.page.getByRole('button', { name: 'Start New Bond', exact: true })).toBeVisible();
+    await expect(this.page.getByTestId('all-bonds-start-bond-button')).toContainText(startBondButtonText);
   }
 
-  async fillField(label: string, value: string): Promise<void> {
+  async fillField(label: BondField, value: string): Promise<void> {
     await this.field(label).fill(value);
   }
 
-  async blurField(label: string): Promise<void> {
+  async blurField(label: BondField): Promise<void> {
     await this.field(label).press('Tab');
   }
 
-  async fieldValue(label: string): Promise<string> {
+  async fieldValue(label: BondField): Promise<string> {
     return this.field(label).inputValue();
   }
 
-  async selectOption(label: string, value: string): Promise<void> {
+  async selectOption(label: BondField, value: string): Promise<void> {
     await this.field(label).click();
     await this.page.getByRole('option', { name: value, exact: true }).click();
   }
 
   async assertCheckboxChecked(): Promise<void> {
-    await expect(this.page.getByTestId('new-bond-dynamic-field-q-500077-checkbox')).toBeChecked();
+    await expect(this.proofOfInsuranceCheckbox).toBeChecked();
   }
 
-  async assertFieldsBlank(labels: string[]): Promise<void> {
+  async assertFieldsBlank(labels: BondField[]): Promise<void> {
     for (const label of labels) {
       await expect(this.field(label)).toHaveValue('');
     }
   }
 
   async submitQuote(): Promise<void> {
-    await this.page.getByTestId('new-bond-submit-button').click();
+    await this.submitButton.click();
   }
 
   async submitQuoteSuccessfully(): Promise<void> {
     const responsePromise = this.page.waitForResponse((response) => response.url().includes('/execute'));
     await this.submitQuote();
-    const response = await responsePromise;
-    expect(response.ok(), `Quote execution returned HTTP ${response.status()}`).toBeTruthy();
+    // Fail fast with the app's own message when client validation blocks submission.
+    const outcome = await Promise.race([
+      responsePromise,
+      this.validationBanner.waitFor().then(() => undefined),
+    ]);
+    if (!outcome) {
+      const message = (await this.validationBanner.innerText()).replace(/\s+/g, ' ').trim();
+      throw new Error(`Submit was blocked by validation: "${message}"`);
+    }
+    expect(outcome.ok(), `Quote execution returned HTTP ${outcome.status()}`).toBeTruthy();
   }
 
-  async submitQuoteWithInvalidAmount(label: string): Promise<void> {
+  async submitQuoteWithInvalidAmount(label: BondField): Promise<void> {
     const responsePromise = this.page
       .waitForResponse((response) => response.url().includes('/execute'), { timeout: 7000 })
       .catch(() => undefined);
@@ -151,44 +199,27 @@ export class BondCreationPage {
   }
 
   async cancelQuote(): Promise<void> {
-    await this.page.getByTestId('new-bond-cancel-button').click();
-    const confirmation = this.page.getByRole('dialog');
-    await expect(confirmation).toContainText('You have unsaved changes. Are you sure you want to leave without saving?');
-    await confirmation.getByRole('button', { name: 'Yes, continue', exact: true }).click();
+    await this.cancelButton.click();
+    const confirmation = this.page.getByTestId('confirmation-modal-modal-root');
+    await expect(confirmation).toContainText(unsavedChangesMessage);
+    await this.page.getByTestId('confirmation-modal-submit-button').click();
     await expect(this.page).toHaveURL(/\/bonds(?:\?.*)?$/);
   }
 
   async startAnotherBondFromNavigation(): Promise<void> {
-    await this.page.getByRole('button', { name: 'Bonds', exact: true }).first().click();
-    await this.page.getByRole('button', { name: 'Start New Bond', exact: true }).click();
+    // The navbar Bonds button has no data-testid, so it is found by its text inside the navbar.
+    await this.page.getByTestId('app-navbar').getByRole('button', { name: bondNavText, exact: true }).click();
+    await this.page.getByTestId('all-bonds-start-bond-button').click();
     await this.assertAgencySelectorReady();
   }
 
-  private field(label: string): Locator {
-    const testIds: Record<string, string> = {
-      'Bond Amount': 'new-bond-initial-info-penalty-amount-range-input',
-      'Pre Pay Selection': 'new-bond-initial-info-pre-pay-select',
-      'Existing Bond Number': 'new-bond-initial-info-existing-bond-number-input',
-      'Effective Date': 'new-bond-initial-info-effective-date-input',
-      'Expiration Date': 'new-bond-initial-info-expiration-date-input',
-      'Bond User Version': 'new-bond-initial-info-bond-user-version-input',
-      'Contractor License Number': 'new-bond-dynamic-field-q-500073-text-input',
-      'Contractor License Effective Date': 'new-bond-dynamic-field-q-500075-date-input',
-      'Contractor License Bond Amount': 'new-bond-dynamic-field-q-500076-money-input',
-      'Business Structure': 'new-bond-dynamic-field-q-500078-select',
-      'State of Incorporation': 'new-bond-dynamic-field-q-500079-state-select',
-      'How many years have you held this license?': 'new-bond-dynamic-field-q-500074-number-input',
-      'Percentage of business done in state of incorporation': 'new-bond-dynamic-field-q-500080-decimal-input',
-      'Value (%)': 'nb-sd-value-1000002',
-      'Assigned Underwriter': 'new-bond-team-underwriter-select',
-      'Assigned Producer': 'new-bond-team-producer-select',
-    };
-
-    if (label === 'Special Instructions') {
-      return this.page.getByPlaceholder('Add special instructions (optional)...');
+  private field(label: BondField): Locator {
+    // The Special Instructions textarea has no data-testid.
+    if (label === bondFields.specialInstructions) {
+      return this.page.getByPlaceholder(specialInstructionsPlaceholder);
     }
 
-    const testId = testIds[label];
+    const testId = fieldTestIds[label];
     if (!testId) throw new Error(`No inspected Bond Creation field mapping for "${label}".`);
     return this.page.getByTestId(testId);
   }

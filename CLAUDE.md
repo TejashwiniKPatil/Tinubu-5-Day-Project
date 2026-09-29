@@ -40,6 +40,7 @@ Primary features owned end-to-end:
 - tests/hybrid/ - Specs that combine UI and API steps
 - File naming: kebab-case for specs, docs, and screenshots; PascalCase for Page Object and API class files
 - test-data/ - Test data
+- test-cases/ - Sanity, smoke, and regression suite lists with latest results; update them when tags change
 - screenshots/ - Test evidence
 - screenshots/Errors/ - Automatic full-page screenshots of failed UI and hybrid tests
 - reports/flaky-triage/ - Generated logs and summaries (created when the triage script runs)
@@ -66,8 +67,11 @@ print, log, expose, or include credential values in test output or evidence.
 ## Playwright Coding Standards
 - Use TypeScript.
 - Use Playwright Test.
-- Prefer getByRole(), getByLabel(), getByText() and other
-  user-facing locators where appropriate.
+- Prefer getByTestId() locators. Use text-based locators (getByRole()
+  with a name, getByLabel(), getByText(), getByPlaceholder()) only when
+  the element has no data-testid, because UI wording changes often.
+- Keep all UI text used by locators or assertions in
+  test-data/constants.ts; never hardcode it in Page Objects or specs.
 - Use Page Object Model for reusable page interactions.
 - Use async/await consistently.
 - Use meaningful test names.
