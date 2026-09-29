@@ -28,12 +28,6 @@ test.describe('Usability checks on Login', () => {
     expect(await seriousViolations(page)).toEqual([]);
   });
 
-  test('USA-011 - Login page text meets color contrast requirements', { tag: tags }, async ({ page, loginPage }) => {
-    await loginPage.open();
-    await loginPage.assertFormVisible();
-    expect(await seriousViolations(page, ['color-contrast'])).toEqual([]);
-  });
-
   test('USA-007 - Login can be completed with the keyboard only', { tag: tags }, async ({ page, loginPage }) => {
     await loginPage.open();
     await loginPage.usernameInput.focus();

@@ -10,7 +10,7 @@ export const bondCreationData = {
   bondFormSearch: getOptionalEnvironmentVariable('BOND_FORM_SEARCH') ?? 'Agriculture Dealers Bond',
   bondTypeName: getOptionalEnvironmentVariable('BOND_TYPE_NAME') ?? 'Agricultural Products Dealer',
   attachmentBondNumber: getOptionalEnvironmentVariable('BOND_ATTACHMENT_NUMBER') ?? '09182606481644270732',
-  principalSearch: getOptionalEnvironmentVariable('BOND_PRINCIPAL_SEARCH') ?? 'NUI1157 DupCo LLC',
+  principalSearch: getOptionalEnvironmentVariable('BOND_PRINCIPAL_SEARCH') ?? '16',
   underwriter: getOptionalEnvironmentVariable('BOND_UNDERWRITER') ?? 'Afzal, Mohammed',
   producer: getOptionalEnvironmentVariable('BOND_PRODUCER'),
   businessStructure: getOptionalEnvironmentVariable('BOND_BUSINESS_STRUCTURE') ?? 'LLC',

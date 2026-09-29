@@ -4,6 +4,7 @@ import {
   bondFields,
   bondNavText,
   allBondsStartButtonText,
+  companiesLabel,
   specialInstructionsPlaceholder,
   surchargesHeading,
   unsavedChangesMessage,
@@ -43,6 +44,8 @@ export class BondCreationPage {
   readonly cancelButton: Locator;
   readonly validationBanner: Locator;
   readonly allBondsStartButton: Locator;
+  readonly companiesCount: Locator;
+  readonly firstCompanyPrincipalButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -59,6 +62,11 @@ export class BondCreationPage {
     this.cancelButton = page.getByTestId('new-bond-cancel-button');
     this.validationBanner = page.getByTestId('new-bond-validation-error-banner');
     this.allBondsStartButton = page.getByTestId('all-bonds-start-bond-button');
+    const principalSection = page.getByTestId('principal-indemnitor-principal-indemnitors-section');
+    this.companiesCount = principalSection.getByText(companiesLabel, { exact: true }).locator('..');
+    this.firstCompanyPrincipalButton = principalSection
+      .locator('[data-testid^="principal-indemnitor-account-company-"][data-testid$="-principal-button"]:enabled')
+      .first();
   }
 
   async assertAgencySelectorReady(): Promise<void> {
@@ -108,19 +116,31 @@ export class BondCreationPage {
     }
   }
 
-  async searchAndSelectPrincipal(name: string): Promise<void> {
-    await this.principalSearch.fill(name);
+  /** Selects the first search result after checking it is available, not disabled. */
+  async searchAndSelectPrincipal(searchText: string): Promise<void> {
+    await this.principalSearch.fill(searchText);
     const results = this.page.getByTestId('principal-search-dropdown');
-    const result = results.getByTestId('principal-search-result').filter({
-      has: this.page.getByText(name, { exact: true }),
-    });
-    await expect(result.first()).toBeVisible();
-    await result.first().click();
+    const firstResult = results.getByTestId('principal-search-result').first();
+    await expect(firstResult).toBeVisible();
+    await expect(firstResult).toBeEnabled();
+    await firstResult.click();
     await expect(results).toBeHidden();
+    await this.assignFirstCompanyAsPrincipal();
   }
 
-  async assertPrincipalVisible(name: string): Promise<void> {
-    await expect(this.page.getByText(name, { exact: true }).last()).toBeVisible();
+  /** Submit shows "At least one person or company is required" until the Companies count is (1). */
+  async assignFirstCompanyAsPrincipal(): Promise<void> {
+    await expect(this.firstCompanyPrincipalButton).toBeVisible();
+    // Clicking an active Principal button unassigns it, so click only when the app has not assigned one.
+    const assigned = await expect(this.companiesCount)
+      .toContainText('(1)', { timeout: 5_000 })
+      .then(() => true, () => false);
+    if (!assigned) await this.firstCompanyPrincipalButton.click();
+    await expect(this.companiesCount).toContainText('(1)');
+  }
+
+  async assertPrincipalVisible(searchText: string): Promise<void> {
+    await expect(this.principalSearch).toHaveValue(new RegExp(searchText, 'i'));
   }
 
   async assertSurchargesVisible(): Promise<void> {

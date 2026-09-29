@@ -31,6 +31,7 @@ export const agencyName = 'TEST - *** Test Agency ***';
 // UI text used only where the element has no data-testid. Update here when the app wording changes.
 export const bondNavText = 'Bonds';
 export const surchargesHeading = 'Surcharges & Discounts';
+export const companiesLabel = 'COMPANIES';
 export const specialInstructionsPlaceholder = 'Add special instructions (optional)...';
 export const unsavedChangesMessage =
   'You have unsaved changes. Are you sure you want to leave without saving?';
