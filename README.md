@@ -31,6 +31,7 @@ npm run test:hybrid
 npm run test:security
 npm run test:performance
 npm run test:usability
+npm run test:e2e
 npm run test:high-value
 npm run test:lockout
 npm run test:list

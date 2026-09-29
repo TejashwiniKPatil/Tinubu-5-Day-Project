@@ -80,11 +80,11 @@ jobs:
 
         
 
-      # - name: Run High Value tests
-      #   if: ${{ !cancelled() }}
-      #   run: npx playwright test --grep @high-value --grep-invert "@lockout|@stateful-login"
-      #   env:
-      #     PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/high-value
+      - name: Run End to End tests
+        if: ${{ !cancelled() }}
+        run: npx playwright test --grep @e2e --grep-invert "@lockout|@stateful-login"
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/e2e
 
       # # Runs last on purpose: TC-011 to TC-014 lock the dedicated lockout account
       # # (three failed logins). Reset that account before the next pipeline run.

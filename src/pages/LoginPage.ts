@@ -1,17 +1,31 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { loginLabels } from '../../test-data/constants';
+import { loginLabels, signInPageTitle, tinubuLogoAltText } from '../../test-data/constants';
 
 export class LoginPage {
   readonly page: Page;
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly signInButton: Locator;
+  readonly tinubuLogo: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.usernameInput = page.getByTestId('login-username-input');
     this.passwordInput = page.getByTestId('login-password-input');
     this.signInButton = page.getByTestId('login-submit-button');
+    // The logo has no data-testid; its alt text is the only stable hook.
+    this.tinubuLogo = page.getByAltText(tinubuLogoAltText, { exact: true });
+  }
+
+  /** Checks the Sign In page title and that the Tinubu logo image has actually loaded. */
+  async assertTinubuBrandingVisible(): Promise<void> {
+    await expect(this.page).toHaveTitle(signInPageTitle);
+    await expect(this.tinubuLogo).toBeVisible();
+    await expect
+      .poll(() => this.tinubuLogo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0), {
+        message: 'Tinubu logo image should load',
+      })
+      .toBe(true);
   }
 
   async open(): Promise<void> {

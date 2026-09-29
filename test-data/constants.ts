@@ -133,3 +133,13 @@ export const performanceTargets = {
   bondStepMs: 3_000,
   loginApiMs: 2_000,
 };
+
+export const languageLabel = 'Language';
+export const languages = {
+  english: { option: 'English (US)', htmlLang: 'en-US' },
+  italian: { option: 'Italiano', htmlLang: 'it-IT' },
+} as const;
+export type Language = (typeof languages)[keyof typeof languages];
+export const tinubuLogoAltText = 'Tinubu';
+export const signInPageTitle = /Sign In/;
+export const attachmentCategory = 'Misc';

@@ -6,7 +6,7 @@ Rules for each of the 11 columns in `templates/test-case-row.csv`. Match the Day
 
 | Prefix | Used for | Next free number (2026-09-29) |
 |--------|----------|-------------------------------|
-| `TC-` | Functional Login, Logout, and Bond Creation cases | TC-073. TC-046 is unused; do not reuse it without checking with the team. |
+| `TC-` | Functional Login, Logout, and Bond Creation cases | TC-074 (TC-073 is the end-to-end journey). TC-046 is unused; do not reuse it without checking with the team. |
 | `API-` | API-only checks | API-003 |
 | `S-` | Sanity checks | S-02 |
 | `SEC-` | Security | SEC-010 |

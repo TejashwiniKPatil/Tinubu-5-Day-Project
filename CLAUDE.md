@@ -35,7 +35,7 @@ Primary features owned end-to-end:
 - tests/ui/ - Browser (UI) specs
 - tests/ui/bond-creation/ - Bond Creation specs, including sanity
 - tests/ui/login/ - Login, lockout, and profile menu specs
-- tests/ui/logout/ - Logout spec; must sort last because it ends the shared session
+- tests/ui/logout/ - Logout specs, including SEC-001 and the TC-073 end-to-end journey; they must sort last because they log out
 - tests/api/ - API specs
 - tests/hybrid/ - Specs that combine UI and API steps
 - tests/non-functional/ - @security, @performance, and @usability specs (SEC-001 lives in tests/ui/logout/ because it logs out)

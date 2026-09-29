@@ -15,6 +15,7 @@
     "test:security": "playwright test --grep @security --grep-invert \"@lockout|@stateful-login\"",
     "test:performance": "playwright test --grep @performance",
     "test:usability": "playwright test --grep @usability",
+    "test:e2e": "playwright test --grep @e2e",
     "test:high-value": "playwright test --grep @high-value --grep-invert @lockout",
     "test:list": "playwright test --list",
     "test:white-box": "node --experimental-strip-types --experimental-test-coverage --test-coverage-branches=90 --test-coverage-include=day-4/white-box/login-lockout.ts --test-coverage-include=day-4/white-box/bond-quote-validator.ts --test day-4/white-box/login-lockout.unit.test.ts day-4/white-box/bond-quote-validator.unit.test.ts",

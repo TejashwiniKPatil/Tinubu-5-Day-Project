@@ -16,6 +16,9 @@ export class LoginApi {
     }
 
     return this.req.post(new URL('/auth/auth/token', getApiBaseUrl()).toString(), {
+       headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
       form: {
         grant_type: grantType,
         username,

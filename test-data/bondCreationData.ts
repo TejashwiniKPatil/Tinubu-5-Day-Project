@@ -9,6 +9,7 @@ export const bondCreationData = {
   carrier: getOptionalEnvironmentVariable('BOND_CARRIER') ?? 'FAKE A BONDING COMPANY (GOLDEN)',
   bondFormSearch: getOptionalEnvironmentVariable('BOND_FORM_SEARCH') ?? 'Agriculture Dealers Bond',
   bondTypeName: getOptionalEnvironmentVariable('BOND_TYPE_NAME') ?? 'Agricultural Products Dealer',
+  attachmentBondNumber: getOptionalEnvironmentVariable('BOND_ATTACHMENT_NUMBER') ?? '09182606481644270732',
   principalSearch: getOptionalEnvironmentVariable('BOND_PRINCIPAL_SEARCH') ?? 'NUI1157 DupCo LLC',
   underwriter: getOptionalEnvironmentVariable('BOND_UNDERWRITER') ?? 'Afzal, Mohammed',
   producer: getOptionalEnvironmentVariable('BOND_PRODUCER'),
