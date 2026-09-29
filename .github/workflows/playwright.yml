@@ -34,6 +34,14 @@ jobs:
             echo "::error::Missing CI settings in the qa environment:$missing. Add each one under Settings > Environments > qa (Variables, or Secrets for passwords)."
             exit 1
           fi
+          for name in TEST_USERNAME TEST_PASSWORD TEST_CLIENT_ID TEST_GRANT_TYPE; do
+            value="${!name}"
+            trimmed="$(printf '%s' "$value" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            if [ "$value" != "$trimmed" ] || printf '%s' "$value" | grep -q $'\r'; then
+              echo "::error::$name has a leading or trailing space, tab, or new line. Re-save it in Settings > Environments > qa with no extra characters."
+              exit 1
+            fi
+          done
           if [ "$TEST_USERNAME" = "$LOCKOUT_TEST_USERNAME" ]; then
             echo "::error::LOCKOUT_TEST_USERNAME must be a different account from TEST_USERNAME, or the lockout tests will lock the main account."
             exit 1
@@ -54,6 +62,23 @@ jobs:
 
       - name: Type-check TypeScript
         run: npm run typecheck
+
+      # Prints only the status and the error body; tokens are removed and secrets are never echoed.
+      - name: Check Login API
+        continue-on-error: true
+        run: |
+          origin="$(printf '%s' "$LOGIN_API" | sed -E 's#^(https?://[^/]+).*#\1#')"
+          echo "Login API origin: $origin"
+          echo "Username length: ${#TEST_USERNAME}, password length: ${#TEST_PASSWORD}"
+          status=$(curl -s -o login-response.json -w '%{http_code}' -X POST "$origin/auth/auth/token" \
+            --data-urlencode "grant_type=$TEST_GRANT_TYPE" --data-urlencode "client_id=$TEST_CLIENT_ID" \
+            --data-urlencode "username=$TEST_USERNAME" --data-urlencode "password=$TEST_PASSWORD")
+          echo "Login API status: $status"
+          if [ "$status" != "200" ]; then
+            jq 'del(.access_token, .refresh_token, .id_token)' login-response.json 2>/dev/null || head -c 500 login-response.json
+            echo "::error::Login API returned $status. See the response above."
+          fi
+          rm -f login-response.json
 
       - name: Run sanity tests
         run: npm run test:sanity
