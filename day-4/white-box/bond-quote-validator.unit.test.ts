@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { MAX_SPECIAL_INSTRUCTIONS, validateQuote, type QuoteInput } from './bond-quote-validator.ts';
+import { validateQuote, type QuoteInput } from './bond-quote-validator.ts';
 
 const valid: QuoteInput = {
   bondAmount: 10_000,
@@ -26,8 +26,11 @@ test('TC-026/TC-027: $0 is accepted; negative and non-numeric amounts are reject
   }
 });
 
-test('TC-028/TC-029: the maximum is accepted and one dollar above is rejected', () => {
+test('TC-028: exactly the maximum bond amount is accepted', () => {
   assert.deepEqual(validateQuote({ ...valid, bondAmount: 40_000_000 }), []);
+});
+
+test('TC-029: one dollar above the maximum is rejected', () => {
   assert.deepEqual(validateQuote({ ...valid, bondAmount: 40_000_001 }), ['Penalty must not exceed 40000000.']);
 });
 
@@ -70,16 +73,8 @@ test('TC-043: Modifier Values outside 3% to 90% are rejected', () => {
   }
 });
 
-test('Special Instructions below the limit are accepted', () => {
-  assert.deepEqual(validateQuote({ ...valid, specialInstructions: 'A'.repeat(MAX_SPECIAL_INSTRUCTIONS - 1) }), []);
-});
-
-test('Special Instructions above the limit are rejected', () => {
-  assert.deepEqual(validateQuote({ ...valid, specialInstructions: 'A'.repeat(MAX_SPECIAL_INSTRUCTIONS + 1) }), [
-    'Special Instructions must not exceed 500 characters.',
-  ]);
-});
-
-test('TC-044: Special Instructions at exactly 500 characters are accepted', () => {
-  assert.deepEqual(validateQuote({ ...valid, specialInstructions: 'A'.repeat(MAX_SPECIAL_INSTRUCTIONS) }), []);
+test('TC-044: Special Instructions of any length are accepted', () => {
+  for (const length of [500, 501, 5_000]) {
+    assert.deepEqual(validateQuote({ ...valid, specialInstructions: 'A'.repeat(length) }), []);
+  }
 });

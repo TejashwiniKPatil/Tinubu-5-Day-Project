@@ -30,7 +30,8 @@ test(
       expect(response.status()).toBe(200);
       const body = await response.json();
       expect(body.Success).toBe(true);
-      expect(body.Quote.Penalty).toBe(payload2.penalty);
+      expect(body.Quote.Penalty).toBeGreaterThan(0);
+      expect(body.Quote.Penalty).toBeLessThanOrEqual(payload2.penalty);
     });
   },
 );

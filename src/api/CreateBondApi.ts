@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { payload2 } from "../../test-data/constants";
+import { payload3 } from "../../test-data/constants";
 import { getApiBaseUrl } from "../utils/environment";
 
 export class CreateBondApi {
@@ -9,7 +9,7 @@ export class CreateBondApi {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      data: payload2,
+      data: payload3,
     });
   }
 }

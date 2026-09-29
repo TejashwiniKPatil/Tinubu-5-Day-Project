@@ -15,8 +15,6 @@ export type PrincipalDirectory = {
   getParties(principalId: string): { companies: Party[]; people: Party[] };
 };
 
-export const MAX_SPECIAL_INSTRUCTIONS = 500;
-
 export function validateQuote(quote: QuoteInput): string[] {
   const errors: string[] = [];
 
@@ -24,7 +22,7 @@ export function validateQuote(quote: QuoteInput): string[] {
     errors.push('Bond Amount is required.');
   } else if (!Number.isFinite(quote.bondAmount) || quote.bondAmount < 0) {
     errors.push('Bond Amount must be a non-negative number.');
-  } else if (quote.bondAmount > quote.maxBondAmount) {
+  } else if (quote.bondAmount >= quote.maxBondAmount) {
     errors.push(`Penalty must not exceed ${quote.maxBondAmount}.`);
   }
 
@@ -48,10 +46,6 @@ export function validateQuote(quote: QuoteInput): string[] {
   const modifier = quote.modifierPercent;
   if (modifier !== undefined && !(modifier >= 3 && modifier <= 90)) {
     errors.push('Modifier Value must be between 3% and 90%.');
-  }
-
-  if ((quote.specialInstructions ?? '').length >= MAX_SPECIAL_INSTRUCTIONS) {
-    errors.push(`Special Instructions must not exceed ${MAX_SPECIAL_INSTRUCTIONS} characters.`);
   }
 
   return errors;

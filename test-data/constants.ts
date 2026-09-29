@@ -143,3 +143,14 @@ export type Language = (typeof languages)[keyof typeof languages];
 export const tinubuLogoAltText = 'Tinubu';
 export const signInPageTitle = /Sign In/;
 export const attachmentCategory = 'Misc';
+
+
+export const payload3={"actionType":1,
+  "bondTypeId":700100,
+  "accountId":1000165,"agencyId":500000,
+  "obligeeId":700007,"penalty":2344,
+  "effectiveDate":"2026-09-29",
+  "responsibleUnderwriterId":700076,
+  "riskStateId":25,"prePaySelection":2,
+  "billingTypeId":1,"overriddenBondNumber":null,
+  "notes":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat teju  cupidatat non proident, sunt culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio","applicantName":"kreto comp","applicantType":2,"applicantIndex":1,"lifeCycleEventId":1,"questionAnswers":[{"questionGroupTemplateId":700046,"index":1,"existingCompanyId":1000076,"answers":[{"questionTemplateId":700218,"answer":"2345 Ridgemont Dr||Anchorage|2|99507-4586|0|Alaska|0|AK|Anchorage|||USA"},{"questionTemplateId":700220,"answer":"4567890987"},{"questionTemplateId":700221,"answer":"t@t.co"},{"questionTemplateId":700222,"answer":"134567899"},{"questionTemplateId":1000000,"answer":"78788"},{"questionTemplateId":1000001,"answer":""},{"questionTemplateId":500007,"answer":"kreto comp"}]}]}

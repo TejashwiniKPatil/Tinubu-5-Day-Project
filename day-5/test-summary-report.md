@@ -44,7 +44,7 @@ The workflow at `.github/workflows/playwright.yml` runs typecheck, `@smoke`, and
 
 ### Exploratory and error guessing
 
-The Bond Creation exploratory session (45 minutes) found seven bugs, logged as DEF-002 and DEF-006 to DEF-011. See `day-3/exploratory-session-2.md`. The Login session (`day-3/exploratory-session-1.md`) and the 12 error guesses have not been executed.
+The Bond Creation exploratory session (45 minutes) found seven bugs, logged as DEF-002 and DEF-006 to DEF-011. See `day-3/exploratory-session-2.md`. The Login session (`day-3/exploratory-session-1.md`) has not been executed. Of the 77 error guesses, 20 are tested with 5 hits (25%); 15 more record patterns from defects already found and are not counted (`day-3/intuition-error-guessing.md`).
 
 **Status:** Partially complete.
 
@@ -56,7 +56,7 @@ Playwright lists 37 tests in 10 spec files, split into `tests/ui/`, `tests/api/`
 
 ### White-box
 
-`npm run test:white-box` on 2026-09-28 ran 24 tests: 22 passed, and 2 failed as expected (WB-001, WB-003). Branch coverage was 94.29%, against a 90% threshold. The integration suite passed 2 of 2. See `day-4/white-box/white-box-test-evidence.md`.
+`npm run test:white-box` on 2026-09-29 ran 24 tests: 22 passed, and 2 failed as expected (WB-001, WB-003). Branch coverage was 93.94%, against a 90% threshold. The models now follow the tester's Alpha observations: lock on the fourth failed attempt, and no Special Instructions limit in the create-bond API. The integration suite passed 2 of 2. See `day-4/white-box/white-box-test-evidence.md`.
 
 **Status:** Complete for the white-box models.
 
@@ -104,7 +104,7 @@ All 11 defects are New.
 
 DEF-002 and DEF-006 to DEF-011 come from the Bond Creation exploratory session. DEF-002 blocks quote submission, so TC-044 and TC-045 cannot pass while it is open.
 
-The Day 4 white-box defects WB-001 to WB-004 are in the login lockout and bond quote validator models, not proven in Alpha. They are recorded in `day-4/white-box/white-box-analysis.md`. WB-001 points to the lockout cases TC-011 to TC-014, and WB-003 points to TC-044.
+The Day 4 white-box defects WB-001 to WB-004 are in the login lockout and bond quote validator models, not proven in Alpha. They are recorded in `day-4/white-box/white-box-analysis.md`. WB-001 points to the lockout cases TC-011 to TC-014, and WB-003 points to TC-028.
 
 The Day 1 test plan maps Severity-1 to High and Severity-2 to Medium. Open Alpha defects remain at both levels.
 

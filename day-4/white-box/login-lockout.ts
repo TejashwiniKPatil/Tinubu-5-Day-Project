@@ -9,7 +9,7 @@ export type CredentialChecker = {
   isValid(username: string, password: string): boolean;
 };
 
-export const MAX_FAILED_ATTEMPTS = 3;
+export const MAX_FAILED_ATTEMPTS = 4;
 
 export function initialSession(): LoginSession {
   return { state: 'signed-out', failedAttempts: 0 };

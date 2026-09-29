@@ -26,12 +26,16 @@ test('TC-012: second failed attempt keeps the user signed out', () => {
   assert.deepEqual(failTimes(2), { state: 'signed-out', failedAttempts: 2 });
 });
 
-test('TC-013: third failed attempt locks the account', () => {
-  assert.equal(failTimes(3).state, 'locked');
+test('TC-013: third failed attempt keeps the user signed out', () => {
+  assert.deepEqual(failTimes(3), { state: 'signed-out', failedAttempts: 3 });
+});
+
+test('TC-013: fourth failed attempt locks the account', () => {
+  assert.equal(failTimes(4).state, 'locked');
 });
 
 test('TC-014: a locked account stays locked with valid credentials', () => {
-  const locked: LoginSession = { state: 'locked', failedAttempts: 3 };
+  const locked: LoginSession = { state: 'locked', failedAttempts: 4 };
   assert.deepEqual(attemptLogin(locked, true), locked);
 });
 
