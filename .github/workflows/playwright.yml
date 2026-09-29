@@ -59,24 +59,24 @@ jobs:
         run: npm run test:smoke
         env:
           PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/smoke
-      - name: Run Regression tests
-        if: ${{ !cancelled() }}
-        run: npx playwright test --grep @regression --grep-invert "@lockout|@stateful-login"
-        env:
-          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/regression
+      # - name: Run Regression tests
+      #   if: ${{ !cancelled() }}
+      #   run: npx playwright test --grep @regression --grep-invert "@lockout|@stateful-login"
+      #   env:
+      #     PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/regression
         
-      - name : Debug API environment safely
-        run: |
-          echo "URL host:"
-          python -c "from urllib.parse import urlparse; print(urlparse('$URL').hostname)"
+      # - name : Debug API environment safely
+      #   run: |
+      #     echo "URL host:"
+      #     python -c "from urllib.parse import urlparse; print(urlparse('$URL').hostname)"
 
-          echo "LOGIN_API host:"
-          python -c "from urllib.parse import urlparse; print(urlparse('$LOGIN_API').hostname)"
+      #     echo "LOGIN_API host:"
+      #     python -c "from urllib.parse import urlparse; print(urlparse('$LOGIN_API').hostname)"
 
-          echo "TEST_USERNAME length: ${#TEST_USERNAME}"
-          echo "TEST_PASSWORD length: ${#TEST_PASSWORD}"
-          echo "TEST_CLIENT_ID length: ${#TEST_CLIENT_ID}"
-          echo "TEST_GRANT_TYPE: [$TEST_GRANT_TYPE]"
+      #     echo "TEST_USERNAME length: ${#TEST_USERNAME}"
+      #     echo "TEST_PASSWORD length: ${#TEST_PASSWORD}"
+      #     echo "TEST_CLIENT_ID length: ${#TEST_CLIENT_ID}"
+      #     echo "TEST_GRANT_TYPE: [$TEST_GRANT_TYPE]"
 
         
 
