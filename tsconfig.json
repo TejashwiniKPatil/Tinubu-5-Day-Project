@@ -22,6 +22,7 @@
     "test-data/**/*.ts",
     "scripts/**/*.ts",
     "day-5/performance/**/*.ts",
-    "day-4/white-box/**/*.ts"
+    "day-4/white-box/**/*.ts",
+    ".claude/hooks/**/*.ts"
   ]
 }
