@@ -46,7 +46,7 @@ Primary features owned end-to-end:
 - screenshots/Errors/ - Automatic full-page screenshots of failed UI and hybrid tests
 - reports/flaky-triage/ - Generated logs and summaries (created when the triage script runs)
 - .claude/commands/ - Claude Code slash commands
-- .claude/agents/ - Claude Code subagents; pom-reviewer is a read-only, clean-context POM reviewer (reports go in day-4/pom-subagent-review.md)
+- .claude/agents/ - Claude Code subagents; pom-reviewer is a read-only, clean-context POM reviewer (reports go in day-4/pom-subagent-review.md); test-design-reviewer is a read-only, clean-context reviewer of gray-box, white-box, and performance tests
 - .env - Local environment configuration; never commit
 
 
