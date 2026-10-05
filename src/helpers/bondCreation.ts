@@ -37,6 +37,9 @@ export async function fillRequiredQuoteData(
   await bondCreationPage.searchAndSelectPrincipal(bondCreationData.principalSearch!);
   await bondCreationPage.fillField(bondFields.bondAmount, amount);
   await bondCreationPage.selectOption(bondFields.prePay, prePayOneYear);
+  if (await bondCreationPage.isFieldShown(bondFields.selectTrade)) {
+    await bondCreationPage.selectOption(bondFields.selectTrade, bondCreationData.trade);
+  }
   if (bondCreationData.effectiveDate) {
     await bondCreationPage.fillField(bondFields.effectiveDate, bondCreationData.effectiveDate);
   }

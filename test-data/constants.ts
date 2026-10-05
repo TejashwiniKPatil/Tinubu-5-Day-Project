@@ -47,6 +47,7 @@ export const bondFields = {
   bondAmount: 'Bond Amount',
   prePay: 'Pre Pay Selection',
   existingBondNumber: 'Existing Bond Number',
+  selectTrade: 'Select Trade',
   effectiveDate: 'Effective Date',
   expirationDate: 'Expiration Date',
   bondUserVersion: 'Bond User Version',
@@ -64,6 +65,9 @@ export const bondFields = {
 } as const;
 export type BondField = (typeof bondFields)[keyof typeof bondFields];
 export const prePayOneYear = '1 Year';
+// Observed 2026-10-01 when the network drops during quote submission.
+export const bondCreateFailedMessage = 'Failed to create bond. Please try again.';
+export const networkErrorText = 'Network Error';
 
 
 export const clientId = process.env.TEST_CLIENT_ID ?? '';

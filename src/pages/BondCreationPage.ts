@@ -6,6 +6,8 @@ import {
   allBondsStartButtonText,
   companiesLabel,
   specialInstructionsPlaceholder,
+  bondCreateFailedMessage,
+  networkErrorText,
   surchargesHeading,
   unsavedChangesMessage,
 } from '../../test-data/constants';
@@ -15,6 +17,7 @@ const fieldTestIds: Partial<Record<BondField, string>> = {
   [bondFields.bondAmount]: 'new-bond-initial-info-penalty-amount-range-input',
   [bondFields.prePay]: 'new-bond-initial-info-pre-pay-select',
   [bondFields.existingBondNumber]: 'new-bond-initial-info-existing-bond-number-input',
+  [bondFields.selectTrade]: 'new-bond-initial-info-premium-rate-var-1-select',
   [bondFields.effectiveDate]: 'new-bond-initial-info-effective-date-input',
   [bondFields.expirationDate]: 'new-bond-initial-info-expiration-date-input',
   [bondFields.bondUserVersion]: 'new-bond-initial-info-bond-user-version-input',
@@ -167,6 +170,11 @@ export class BondCreationPage {
     return this.field(label).inputValue();
   }
 
+  /** Bond-type-specific fields such as Select Trade appear only for some bond types. */
+  async isFieldShown(label: BondField): Promise<boolean> {
+    return this.field(label).isVisible();
+  }
+
   async selectOption(label: BondField, value: string): Promise<void> {
     await this.field(label).click();
     await this.page.getByRole('option', { name: value, exact: true }).click();
@@ -218,6 +226,13 @@ export class BondCreationPage {
     }
 
     await expect(this.page.getByRole('alert')).toBeVisible();
+  }
+
+  /** The failure toast has no data-testid, so it is found by its role and observed text. */
+  async assertSubmitFailedByNetwork(): Promise<void> {
+    await expect(this.page.getByRole('alert').filter({ hasText: bondCreateFailedMessage })).toBeVisible({ timeout: 15_000 });
+    await expect(this.validationBanner).toContainText(networkErrorText);
+    await expect(this.submitButton).toBeEnabled();
   }
 
   async openCancelDialog(): Promise<Locator> {
