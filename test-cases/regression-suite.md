@@ -18,9 +18,11 @@ Lockout cases: `npm run test:lockout`. These use a separate config and a dedicat
 | TC-010 | Login with excessively long password | Login | [login-cases.spec.ts](../tests/ui/login/login-cases.spec.ts) | — |
 | TC-015 | Verify login with username containing leading/trailing spaces | Login | [login-cases.spec.ts](../tests/ui/login/login-cases.spec.ts) | — |
 | TC-018 | Verify profile menu contains Log Out option | Login | [profile-menu.spec.ts](../tests/ui/login/profile-menu.spec.ts) | smoke |
+| TC-102 | Verify quote submission fails safely when the network drops after clicking Submit | Bond Creation | [offline-submit.spec.ts](../tests/ui/bond-creation/offline-submit.spec.ts) | bond-creation, stateful-bond |
+| TC-103 | Verify clicking Submit sends the create-bond request exactly once | Bond Creation | [submit-once.spec.ts](../tests/ui/bond-creation/submit-once.spec.ts) | bond-creation, stateful-bond |
 | TC-016 | Logout from authenticated user session | Logout | [logout.spec.ts](../tests/ui/logout/logout.spec.ts) | smoke, high-value, stateful-login |
 
-Total: 9 tests.
+Total: 11 tests.
 
 ### Lockout group (`npm run test:lockout`)
 

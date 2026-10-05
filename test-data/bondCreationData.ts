@@ -18,6 +18,7 @@ export const bondCreationData = {
   yearsHeldLicense: getOptionalEnvironmentVariable('BOND_LICENSE_YEARS') ?? '5',
   businessPercentage: getOptionalEnvironmentVariable('BOND_BUSINESS_PERCENTAGE') ?? '50',
   effectiveDate: getOptionalEnvironmentVariable('BOND_EFFECTIVE_DATE'),
+  trade: getOptionalEnvironmentVariable('BOND_TRADE') ?? 'Plumber',
 };
 
 export type BondCreationDataKey = keyof typeof bondCreationData;

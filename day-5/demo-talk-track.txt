@@ -1,0 +1,54 @@
+TINUBU SURETY QA - 5 MINUTE TALK
+(Speak at a calm pace, about 150 words per minute. The time marks show where you should be.)
+
+
+[0:00 - Introduction]
+
+Good morning everyone. Today I will explain how I tested the Tinubu Surety application: how I designed my test cases, which techniques and tools I used, how I automated the tests, and what I found.
+
+I owned two features end to end, Login and Bond Creation, on the Alpha test environment. My process had four steps: understand the application, design the test cases, run them manually, and then automate the most important ones. One rule guided all of it. I always separate what I actually observed, with evidence, from what I assumed. If a business rule was not written down anywhere, I did not invent the expected result. I marked it as a requirement to confirm with the team.
+
+
+[0:45 - How I designed the test cases]
+
+First, I explored the application and wrote down every workflow step by step: signing in, choosing an agency and a bond type, finding a principal, entering the bond details, assigning an underwriter, and submitting the quote. Then I chose a test design technique for each behavior.
+
+Equivalence partitioning means grouping inputs that the system should treat the same way. For login, that is valid, invalid, and blank credentials. I test one value from each group instead of every possible value, which saves time without losing coverage.
+
+Boundary value analysis means testing at the edges of a limit, because that is where most defects hide. The bond amount allows zero up to forty million dollars, so I tested minus one, zero, forty million, and forty million and one.
+
+Decision tables help when several conditions together decide one result, such as whether a quote is approved or sent for review. I list the combinations and test the important ones.
+
+State transition testing is for things that change state. For example, an account becomes locked after repeated failed logins, and a bond moves from draft to submitted, approved, and issued. I test the allowed moves, and also the moves that should be blocked.
+
+Finally, error guessing and exploratory testing: trying things that often break applications, like double clicking Submit, entering very long text, or losing the internet right after clicking Submit. Altogether, this gave me just over one hundred test cases.
+
+
+[2:00 - Automation]
+
+I automated the tests with Playwright and TypeScript, using the Page Object Model. Each screen has its own class that holds its buttons, fields, and actions. The tests then read like user steps, and when the screen changes, I fix it in only one place. I use stable test IDs to find elements, I never use fixed waits, and the tests log in once and reuse that session. Passwords come only from environment variables, never from the code. Today there are more than sixty automated tests, and a GitHub pipeline runs them automatically.
+
+
+[2:40 - UI, API, hybrid, and integration testing]
+
+UI testing checks the application through the browser, the way a user sees it: login, logout, the quote form, and a full end-to-end journey.
+
+API testing calls the services directly, without the browser. This found my most serious defect: sending the same bond request twice creates two bonds instead of rejecting the duplicate.
+
+Hybrid testing checks the same rule in both places, the screen and the API, to make sure they agree.
+
+For integration and grey-box testing, I used my knowledge of the network calls behind the screens. In one test, I changed the amount in the request after the browser had already accepted it, and the server still rejected it. That proves the server does not blindly trust the browser. In another, I cut the network as the quote was submitted, and confirmed that no bond was created, no data was lost, and a retry created exactly one bond. I also wrote white-box unit tests for the lockout and validation logic, with over ninety percent branch coverage.
+
+
+[3:55 - Non-functional testing]
+
+Non-functional testing checks how well the system works, not just what it does. For performance, I measured page and API response times, and used k6 for load testing. The first run with one hundred users failed, so I reduced it to five users for a planned rerun. For security, I ran safe checks: HTTPS everywhere, protected pages require login, and passwords never appear in URLs or browser storage. For accessibility, I ran an automated scan and tested keyboard-only use. Every failure is recorded with a screenshot.
+
+
+[4:35 - Results]
+
+In total, I logged eleven defects: three high, three medium, and five low. My recommendation is go with accepted risks, as long as the duplicate bond issue is fixed before release and the remaining critical tests are run.
+
+Thank you. I am happy to take your questions.
+
+[5:00 - End]
